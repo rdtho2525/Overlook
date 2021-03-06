@@ -20,7 +20,7 @@ describe('Customer', function() {
     expect(Customer).to.be.a('function');
   });
 
-  it.skip('should be an instance of a Customer', function() {
+  it('should be an instance of a Customer', function() {
     expect(customer).to.be.an.instanceOf(Customer);
   });
 
