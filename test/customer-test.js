@@ -9,11 +9,18 @@ import {
 } from './sampleData.js';
 
 describe('Customer', function() {
+  let rooms;
+  let bookings;
+  let futureBookings;
+  let pastBookings;
+  let customer;
 
   beforeEach(function() {
-    const bookings = sampleBookings;
-    const rooms = sampleRooms;
-    const customer = new Customer(sampleCustomers[0]);
+    rooms = sampleRooms;
+    bookings = sampleBookings;
+    futureBookings = bookings.filter(booking => booking.date > '2020/04/01');
+    pastBookings = bookings.filter(booking => booking.date < '2020/04/01');
+    customer = new Customer(sampleCustomers[0], 'overlook2021');
   });
 
   it('should be a function', function() {
@@ -24,36 +31,33 @@ describe('Customer', function() {
     expect(customer).to.be.an.instanceOf(Customer);
   });
 
-  it.skip('should have a name', function() {
+  it('should have a name', function() {
     expect(customer.name).to.equal('Leatha Ullrich');
   });
 
-  it.skip('should have an ID', function() {
+  it('should have an ID', function() {
     expect(customer.id).to.equal(1);
   });
 
-  it.skip('should have a username', function() {
-    expect(customer.username).to.equal();
+  it('should have a username', function() {
+    expect(customer.username).to.equal('customer1');
   });
 
-  it.skip('should have a password', function() {
-    expect(customer.password).to.equal();
+  it('should have a password', function() {
+    expect(customer.password).to.equal('overlook2021');
   });
 
-  it.skip('should track the total amount they\'ve spent on rooms', function() {
-    expect(customer.amountSpent).to.equal();
+  it('should hold a list of bookings', function() {
+    expect(customer.bookings).to.eql([]);
   });
 
-  it.skip('should have a list of bookings', function() {
-    expect(customer.bookings).to.eql(bookings);
-  });
-
-  it.skip('should have a list of past bookings', function() {
+  it('should hold a list of past bookings', function() {
     expect(customer.pastBookings).to.eql([]);
   });
 
   it.skip('should be able to book a room', function() {
-
+    customer.bookRoom(bookings[0]);
+    expect(customer.bookings).to.eql(futureBookings);
   });
 
   it.skip('should be able to cancel a booking', function() {
