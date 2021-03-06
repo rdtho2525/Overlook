@@ -12,7 +12,8 @@ describe('Room', function() {
   let room;
 
   beforeEach(function() {
-    room = new Room();
+    room = new Room(sampleRooms[0]);
+    room2 = new Room(sampleRooms[1]);
   });
 
   it.skip('should be a function', function() {
@@ -24,11 +25,11 @@ describe('Room', function() {
   });
 
   it.skip('should have a number', function() {
-    expect(room.number).to.equal(917);
+    expect(room.number).to.equal(1);
   });
 
   it.skip('should have a type', function() {
-    expect(room.roomType).to.equal('');
+    expect(room.roomType).to.equal('residential suite');
   });
 
   it.skip('could or could not have a bidet', function() {
@@ -37,7 +38,7 @@ describe('Room', function() {
   });
 
   it.skip('should have a bed size', function() {
-    expect(room.bedSize).to.equal();
+    expect(room.bedSize).to.equal('queen');
   });
 
   it.skip('should either be available or unavailable', function() {
@@ -46,10 +47,10 @@ describe('Room', function() {
   });
 
   it.skip('should have a bed count', function() {
-    expect(room.numBeds).to.equal();
+    expect(room.numBeds).to.equal(1);
   });
 
   it.skip('should have a nightly cost', function() {
-    expect(room.costPerNight).to.equal();
+    expect(room.costPerNight).to.equal(358.40);
   });
 })
