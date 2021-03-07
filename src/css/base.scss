@@ -1,7 +1,174 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-;
+// $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700,900);
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  // border: 1px solid red;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  font-family: Lato;
+}
 
 body {
-  background: $primary-background;
+  height: 100%;
+  width: 100%;
+}
+
+main {
+  width: 100%;
+}
+
+.nav-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  position: absolute;
+}
+
+.account-info {
+  width: 40%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  color: #fff;
+  padding: 7px;
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+}
+
+picture > img {
+  height: auto;
+  width: 100%;
+}
+
+.search-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform: translate(0, -50%);
+}
+
+.search-bar {
+  height: 2.25em;
+  width: 55%;
+  border-radius: 5px;
+  font-size: 14px;
+  background-image: url(https://cdn2.hubspot.net/hubfs/4004166/bioticresearch_website_assets/images/search_icon.png);
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding-left: 40px;
+}
+
+.filter-section > * {
+  margin: 10px 7px;
+}
+
+.filter-button {
+  border-radius: 15px;
+  padding: 5px 7px;
+}
+
+.date-field {
+  height: 20px;
+  width: 135px;
+}
+
+.date-filed > label {
+  font-size: 12px;
+}
+
+.room-types {
+  width: 100%;
+  display: flex;
+}
+
+.radio-button {
+  width: auto;
+  margin: 5px;
+}
+
+.radio-label {
+  font-size: 12px;
+}
+
+// .filter-section,
+// .room-container {
+//   width: 95%;
+//   margin: 0 auto;
+// }
+
+.section-header {
+  margin: 10px 7px;
+}
+
+.room-container {
+  height: auto;
+}
+
+.room-card {
+  height: 8em;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+.room-image {
+  height: 85%;
+  width: 45%;
+  display: flex;
+  margin-left: 5px;
+}
+
+.room-image > img {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.room-details {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.room-details > p {
+  width: 125px;
+  // display: inline-block;
+  margin-bottom: 3px;
+  padding-left: 5px;
+}
+
+// .icon-container {
+//   display: flex;
+//   justify-content: flex-end;
+//   margin: 2px;
+// }
+
+.booking-icon {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  transform: translate(410%, -125%);
+}
+
+.hidden {
+  display: none;
 }
