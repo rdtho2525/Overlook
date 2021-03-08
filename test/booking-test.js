@@ -3,8 +3,7 @@ const expect = chai.expect;
 const Booking = require('../src/Booking');
 
 import {
-  sampleBookings,
-  sampleRooms,
+  // sampleBookings,
   sampleCustomers
 } from './sampleData.js';
 
@@ -12,34 +11,34 @@ describe('Booking', function() {
   let booking;
 
   beforeEach(function() {
-    booking = new Booking();
+    booking = new Booking(sampleCustomers[1], '2020/04/15', 5);
   });
 
-  it.skip('should be a function', function() {
+  it('should be a function', function() {
     expect(Booking).to.be.a('function');
   });
 
-  it.skip('should be an instance of Booking', function() {
+  it('should be an instance of Booking', function() {
     expect(booking).to.be.an.instanceOf(Booking);
   });
 
   it.skip('should have an ID', function() {
-    expect(booking.id).to.equal(/*integer*/);
+    expect(booking.id).to.equal(/*string*/);
   });
 
-  it.skip('should have a user ID', function() {
-    expect(booking.userID).to.equal(/*userID*/);
+  it('should have a user ID', function() {
+    expect(booking.userID).to.equal(2);
   });
 
-  it.skip('should have a date', function() {
-    expect(booking.date).to.equal(/*date*/);
+  it('should have a date', function() {
+    expect(booking.date).to.equal('2020/04/15');
   });
 
-  it.skip('should have a room number', function() {
-    expect(booking.roomNumber).to.equal(/*roomNumber*/);
+  it('should have a room number', function() {
+    expect(booking.roomNumber).to.equal(5);
   });
 
-  it.skip('should have a list of charges that apply', function() {
-    expect(booking.roomServiceCharges).to.eql(/*array of charges*/);
+  it('should be able to hold a list of service charges', function() {
+    expect(booking.roomServiceCharges).to.eql([]);
   });
 })
