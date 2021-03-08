@@ -57,6 +57,25 @@ describe('Manager', function() {
     expect(manager.customers[0].bookings.pop()).to.eql([/*room obj*/]);
   });
 
+  it.skip('should be able to filter bookings by date', function() {
+    expect(manager.filterBookingsByDate('2020/02/01', '2020/02/28')).to.eql([
+      {
+        "id": "5fwrgu4i7k55hl6t7",
+        "userID": 20,
+        "date": "2020/02/16",
+        "roomNumber": 7,
+        "roomServiceCharges": []
+      },
+      {
+        "id": "5fwrgu4i7k55hl6t8",
+        "userID": 1,
+        "date": "2020/02/05",
+        "roomNumber": 12,
+        "roomServiceCharges": []
+      }
+    ]);
+  });
+
   it.skip('should be able to cancel a guest booking', function() {
     manager.cancelGuestBooking(/*guest name*/);
     expect(manager.customers[0].bookings).to.not.include(/*room obj*/)
