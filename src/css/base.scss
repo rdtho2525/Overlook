@@ -25,7 +25,7 @@ main {
 }
 
 .nav-container {
-  width: 100%;
+  width: 97%;
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
@@ -46,8 +46,8 @@ main {
   width: 50px;
 }
 
+picture,
 picture > img {
-  height: auto;
   width: 100%;
 }
 
@@ -61,6 +61,7 @@ picture > img {
 .search-bar {
   height: 2.25em;
   width: 55%;
+  max-width: 430px;
   border-radius: 5px;
   font-size: 1rem;
   background-image: url(https://cdn2.hubspot.net/hubfs/4004166/bioticresearch_website_assets/images/search_icon.png);
@@ -70,7 +71,12 @@ picture > img {
 }
 
 .filter-section > * {
-  margin: 10px 7px;
+  margin: 10px 0px;
+}
+
+.filter-section,
+.section-header {
+  margin: 12px;
 }
 
 .filter-button {
@@ -101,12 +107,6 @@ picture > img {
   font-size: 12px;
 }
 
-// .filter-section,
-// .room-container {
-//   width: 95%;
-//   margin: 0 auto;
-// }
-
 .section-header {
   margin: 10px 7px;
 }
@@ -123,7 +123,7 @@ picture > img {
 .room-card {
   height: 8em;
   width: 95%;
-  max-width: 355px;
+  max-width: 500px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -133,6 +133,7 @@ picture > img {
   margin-bottom: 12px;
   border: 2px solid black;
   border-radius: 10px;
+  font-size: 14px;
 }
 
 .room-image {
@@ -156,7 +157,7 @@ picture > img {
 }
 
 .room-details > p {
-  width: 125px;
+  width: 150px;
   margin-bottom: 3px;
   padding-left: 5px;
 }
@@ -188,16 +189,86 @@ picture > img {
 }
 
 @media only screen and (min-width: 768px) {
-}
+  // .filter-section,
+  // .section-header {
+  //   margin: 7px 20px;
+  // }
 
-@media only screen and (min-width: 1024px) {
-  .room-card {
-    height: 10em;
-    max-width: 525px;
-    font-size: 17px;
+  .room-container {
+    justify-content: space-between;
+    margin-top: 10px;
   }
 
-  .room-details > p {
-    width: 250px;
+  .room-card {
+    height: 8em;
+    max-width: 48%;
+    font-size: 1.63vh;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .filter-section,
+  .section-header {
+    margin: 7px 20px;
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  html {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 85%;
+    min-width: 1350px;
+    margin: 0 auto;
+    background-color: white;
+  }
+
+  .nav-container {
+    width: 1250px;
+  }
+
+  picture {
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 3px 3px 5px 6px #ccc;
+  }
+
+  // picture > img {
+  //   width: 75%;
+  // }
+
+  picture,
+  .filter-section,
+  .room-container {
+    max-width: 1275px;
+  }
+
+  .filter-section {
+    width: 97%;
+  }
+  .room-card {
+    height: 7em;
+    max-width: 400px;
+    // font-size: 16px;
+  }
+
+  // .room-details > p {
+  //   width: 250px;
+  // }
+}
+
+@media only screen and (max-width: 300px) {
+  .filter-button-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .room-card {
+    // font-size: 14px;
   }
 }
