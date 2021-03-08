@@ -3,9 +3,7 @@ const expect = chai.expect;
 const Hotel = require('../src/Hotel');
 
 import {
-  sampleBookings,
   sampleRooms,
-  sampleCustomers
 } from './sampleData.js';
 
 describe('Hotel', function() {
