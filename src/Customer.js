@@ -10,14 +10,14 @@ class Customer {
     this.pastBookings = [];
   }
 
-  bookRoom(date, roomNumber) {
-    const booking = new Booking(this, date, roomNumber)
+  bookRoom(date, room) {
+    const booking = new Booking(this, date, room)
     this.bookings.push(booking);
   }
 
   filterBookingsByDate(fromDate, toDate) {
     return this.bookings.filter(booking => {
-      return booking.date > fromDate && booking.date < toDate
+      return booking.date > fromDate && booking.date < toDate;
     });
   }
 
