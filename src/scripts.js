@@ -21,3 +21,34 @@ const roomNumber = document.getElementById('roomNumber');
 const roomType = document.getElementById('roomType');
 const bedNum = document.getElementById('bedNum');
 const availabilityStatus = document.getElementById('availabilityStatus');
+
+import Customer from './Customer';
+import Booking from './Booking';
+import Hotel from './Hotel';
+import Room from './Room';
+
+// const currentCustomer = new Customer();
+// const hotel = new Hotel();
+
+
+const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
+  .then(response => response.json())
+  // .then(customer => console.log(customer))
+  .catch(err => console.log(err));
+
+// const fetchSingleCustomer = fetch('http://localhost:3001/api/v1/customers/<id> where<id> will be a number of a customer’s id')
+//   .then();
+//   .catch(err => displayErrorMessage(err));
+
+const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
+  .then(response => response.json())
+  // .then(booking => console.log(booking))
+  .catch(err => displayErrorMessage(err));
+
+const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
+  .then(response => response.json())
+  // .then(room => console.log(room))
+  .catch(err => displayErrorMessage(err));
+
+Promise.all([fetchCustomers, fetchBookings, fetchRooms])
+  .then(values => console.log(values));
