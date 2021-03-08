@@ -1,3 +1,23 @@
 import './css/base.scss';
 // import './css/style.scss';
 
+const dollarsSpent = document.getElementById('dollarsSpent');
+const customerName = document.getElementById('customerName');
+const searchBar = document.getElementById('searchBar');
+const dateRangeButton = document.getElementById('dateRangeButton');
+const roomTypeButton = document.getElementById('roomTypeButton');
+const bookingsButton = document.getElementById('bookingsButton');
+const fromDate = document.getElementById('fromDate');
+const toDate = document.getElementById('toDate');
+const residentialButton = document.getElementById('residentialButton');
+const suiteButton = document.getElementById('suiteButton');
+const juniorButton = document.getElementById('juniorButton');
+const singleRoomButton = document.getElementById('singleRoomButton');
+const pastBookings = document.getElementById('pastBookings');
+const sectionHeader = document.getElementById('sectionHeader');
+const roomCard = document.getElementById('roomCard');
+const roomImage = document.getElementById('roomImage');
+const roomNumber = document.getElementById('roomNumber');
+const roomType = document.getElementById('roomType');
+const bedNum = document.getElementById('bedNum');
+const availabilityStatus = document.getElementById('availabilityStatus');
