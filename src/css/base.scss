@@ -47,8 +47,17 @@ main {
 }
 
 picture,
-picture > img {
+.banner-image {
   width: 100%;
+}
+
+.logo {
+  height: auto;
+  width: 30%;
+  max-height: 305px;
+  max-width: 307px;
+  position: absolute;
+  padding-left: 2px;
 }
 
 .search-container {

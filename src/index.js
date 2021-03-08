@@ -11,5 +11,6 @@ import './images/turing-logo.png'
 import './images/pexels-konstantinos-eleftheriadis-2034335.jpg'
 import './images/avatar.svg'
 import './images/noun_booking_1094614.svg'
+import './images/logo2.png'
 
 console.log('This is the JavaScript entry file - your code begins here.');
