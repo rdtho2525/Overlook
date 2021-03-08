@@ -1,13 +1,104 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <title>Webpack Starter Kit</title>
-  </head>
-  <body>
-    <h1>Webpack Starter Kit</h1>
-
-    <img src="./images/turing-logo.png" alt="turing logo" height="100px" width="100px">
-
-    <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <main>
+    <div class="nav-container">
+      <nav class="account-info">
+        <aside id="amountSpent">Amount spent: <p id="dollarsSpent"></p></aside>
+        <p id="customerName">Greg Cote</p>
+        <img class="avatar" src="./images/avatar.svg" alt="Avatar Icon">
+      </nav>  
+    </div>
+    <picture>
+      <img src="./images/pexels-konstantinos-eleftheriadis-2034335.jpg" alt="Hotel Overlook at Sunset">
+    </picture>
+    <div class="search-container">
+      <input id="searchBar" class="search-bar" type="search" placeholder="Search">
+    </div>
+    <section class="filter-section">
+      <aside>Filter by:</aside>
+      <div class="filter-button-container">
+        <button id="dateRangeButton" class="filter-button">Date Range</button>
+        <button id="roomTypeButton" class="filter-button">Room Type</button>
+        <button id="bookingsButton" class="filter-button">Your Bookings</button>
+      </div>
+      <aside class="specify-filter">
+        <div class="dates hidden">
+          <label for="fromDate">From:</label>
+          <input id="fromDate" class="date-field" type="date">
+          <label for="toDate">To:</label>
+          <input id="toDate" class="date-field" type="date">  
+        </div>
+        <div class="room-types hidden">
+          <div class="radio-button">
+            <input id="residentialButton" type="radio">
+            <label for="residentialButton" class="radio-label">Residential Suite</label>
+          </div>
+          <div class="radio-button">
+            <input id="suiteButton" type="radio">
+            <label for="suiteButton" class="radio-label">Suite</label>  
+          </div>
+          <div class="radio-button">
+            <input id="juniorButton" type="radio">
+            <label for="juniorButton" class="radio-label">Junior Suite</label>  
+          </div>
+          <div class="radio-button">
+            <input id="singleRoomButton" type="radio">
+            <label for="singleRoomButton" class="radio-label">Single Room</label>  
+          </div>
+        </div>
+        <div class="past-bookings hidden">
+          <button id="pastBookings" class="past-bookings">Past bookings</button>
+        </div>
+      </aside>
+    </section>
+    <h2 id="sectionHeader" class="section-header">Browse Rooms:</h2>
+    <section class="room-container">
+      <article id="roomCard" class="room-card">
+        <div class="room-image">
+          <img id="roomImage" src="" alt="">
+          <!-- <img id="priceTag" src="" alt="">   -->
+        </div>
+        <div class="room-details">
+          <img id="" class="booking-icon" src="" alt="Book Room Icon">
+          <p id="roomNumber">Room no. 00</p>
+          <p id="roomType">Residential Suite</p>
+          <p id="bedNum">2 Beds</p>
+          <p id="availabilityStatus">Status: Available</p>
+        </div>
+      </article>
+      <article class="room-card">
+        <div class="room-image">
+          <img id="roomImage" src="" alt="">
+          <!-- <img id="priceTag" src="" alt="">   -->
+        </div>
+        <div class="room-details">
+          <img id="" class="booking-icon" src="" alt="Book Room Icon">
+          <p id="roomNumber">Room no. 00</p>
+          <p id="roomType">Residential Suite</p>
+          <p id="bedNum">2 Beds</p>
+          <p id="availabilityStatus">Status: Available</p>
+        </div>
+      </article>
+      <article class="room-card">
+        <div class="room-image">
+          <img id="roomImage" src="" alt="">
+          <!-- <img id="priceTag" src="" alt="">   -->
+        </div>
+        <div class="room-details">
+          <img id="" class="booking-icon" src="" alt="Book Room Icon">
+          <p id="roomNumber">Room no. 00</p>
+          <p id="roomType">Residential Suite</p>
+          <p id="bedNum">2 Beds</p>
+          <p id="availabilityStatus">Status: Available</p>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
 </html>
