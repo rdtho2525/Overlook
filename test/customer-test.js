@@ -55,16 +55,140 @@ describe('Customer', function() {
     expect(customer.pastBookings).to.eql([]);
   });
 
-  it.skip('should be able to book a room', function() {
-    customer.bookRoom(bookings[0]);
-    expect(customer.bookings).to.eql(futureBookings);
+  it('should be able to book a room', function() {
+    customer.bookRoom('2020/03/31', 3);
+    expect(customer.bookings).to.eql([
+      {
+        // "id": "5fwrgu4i7k55hl6t8",
+        "userID": 1,
+        "date": "2020/03/31",
+        "roomNumber": 3,
+        "roomServiceCharges": []
+      }
+    ]);
   });
 
-  it.skip('should be able to cancel a booking', function() {
+  it('should be able to filter bookings by date', function() {
+    customer.bookRoom('2020/03/31', 3);
+    customer.bookRoom('2020/02/15', 2);
+    customer.bookRoom('2020/02/22', 4);
+    customer.bookRoom('2020/04/03', 5);
+    expect(customer.bookings).to.eql([
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/03/31",
+        "roomNumber": 3,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/15",
+        "roomNumber": 2,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/22",
+        "roomNumber": 4,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/04/03",
+        "roomNumber": 5,
+        "roomServiceCharges": []
+      }
+    ])
+    expect(customer.filterBookingsByDate('2020/02/01', '2020/02/28')).to.eql([
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/15",
+        "roomNumber": 2,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t8",
+        "userID": 1,
+        "date": "2020/02/22",
+        "roomNumber": 4,
+        "roomServiceCharges": []
+      }
+    ]);
+});
 
+  it('should be able to cancel a booking', function() {
+    customer.bookRoom('2020/03/31', 3);
+    customer.bookRoom('2020/02/15', 2);
+    customer.bookRoom('2020/02/22', 4);
+    customer.bookRoom('2020/04/03', 5);
+    
+    expect(customer.bookings).to.eql([
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/03/31",
+        "roomNumber": 3,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/15",
+        "roomNumber": 2,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/22",
+        "roomNumber": 4,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/04/03",
+        "roomNumber": 5,
+        "roomServiceCharges": []
+      }
+    ]);
+
+    customer.cancelBooking('2020/03/31', 3);
+
+    expect(customer.bookings).to.eql([
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/15",
+        "roomNumber": 2,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/02/22",
+        "roomNumber": 4,
+        "roomServiceCharges": []
+      },
+      {
+        // "id": "5fwrgu4i7k55hl6t7",
+        "userID": 1,
+        "date": "2020/04/03",
+        "roomNumber": 5,
+        "roomServiceCharges": []
+      }
+    ]);
   });
 
-  it.skip('should be able to calculate the total amount they\'ve spent on rooms', function() {
-
+  it('should be able to calculate the total amount they\'ve spent on rooms', function() {
+    customer.bookRoom('2020/02/15', 2);
+    customer.bookRoom('2020/02/22', 4);
+    customer.bookRoom('2020/04/03', 5);
+    expect(customer.calcTotalAmount(sampleRooms)).to.equal(1246.99)
   });
 })
