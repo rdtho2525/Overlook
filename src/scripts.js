@@ -34,19 +34,23 @@ const formRadioRoomType = document.getElementsByName('formRadioRoomType');
 const submitButton = document.getElementById('submitButton');
 const radioLabels = document.querySelectorAll('.radio-label');
 const bookingMessage = document.getElementById('bookingMessage');
+const typeSelection = document.getElementById('typeSelection');
 
 import Customer from './Customer';
-import Booking from './Booking';
 import Hotel from './Hotel';
+import Booking from './Booking';
 import Room from './Room';
 
-// const currentCustomer = new Customer();
-// const hotel = new Hotel();
+let currentCustomer;
+let hotel;
+// let booking;
+// let room;
 
-const openDashboard = (roomData, guest) => {
+const openDashboard = (guest, roomData) => {
+  instantiateClasses(guest, roomData)
   populateRoomSection(roomData);
-  getGuestsTotalAmount(guest, roomData);
-  displayUserName(guest);
+  getGuestsTotalAmount(currentCustomer, roomData);
+  displayUserName(currentCustomer);
 }
 
 // const capitalize = word => {
@@ -57,8 +61,17 @@ const openDashboard = (roomData, guest) => {
 //   return splitWords.join(' ');
 // }
 
+const getRandomUserIndex = () => {
+  return Math.floor(Math.random() * 50)
+}
+
+const instantiateClasses = (guest, roomData) => {
+  currentCustomer = new Customer(guest, 'overlook2021');
+  hotel = new Hotel(roomData);
+}
+
 const populateRoomSection = (roomData) => {
-  const allRooms = roomData.rooms.map(room => {
+  const allRooms = roomData.map(room => {
    return `<article class="room-card">
       <div class="room-image">
         <img id="roomImage" src="" alt="">
@@ -99,6 +112,13 @@ const populateBookingsSection = (bookingData) => {
   });
 }
 
+const filterRoomsByType = () => {
+  const roomList = Array.from(radioRoomType);
+  const selection = roomList.find(room => room.checked);
+  const filteredList = hotel.filterRoomsByType(selection.value);
+  populateRoomSection(filteredList);
+}
+
 const getGuestsTotalAmount = (guest, roomData) => {
   dollarsSpent.innerText = guest.calcTotalAmount(roomData);
 }
@@ -107,10 +127,12 @@ const displayUserName = guest => {
   customerName.innerText = guest.name;
 }
 
-const selectRoom = (targetContainer, roomNumber) => {
+const selectRoom = (targetContainer, bookingObj) => {
   //display reservation message
+  currentCustomer.bookRoom(bookingObj);
   const targetRoomType = targetContainer.querySelector('.room-type').innerText;
-  bookingMessage.innerHTML = `<p>You've selected room ${roomNumber}, a ${targetRoomType}.</p>`;
+  bookingMessage.innerHTML = `<p>You've selected room ${bookingObj.roomNumber}, a ${targetRoomType}.</p>`;
+  console.log(currentCustomer.bookings)
 }
 
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
@@ -131,35 +153,10 @@ const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
 
 Promise.all([fetchCustomers, fetchBookings, fetchRooms])
   .then(values => {
-    console.log(values)
-    const currentCustomer = new Customer(values[0].customers[1], 'overlook2021')
-    console.log(values[2].rooms);
-    populateRoomSection(values[2]);
-    getGuestsTotalAmount(currentCustomer, values[2].rooms);
-    displayUserName(currentCustomer);
+    const randomCustomer = values[0].customers[getRandomUserIndex()];
+    openDashboard(randomCustomer, values[2].rooms)
   })
   .catch(err => console.log(err));
-
-  // submitButton.addEventListener('click', (event) => {
-  //   event.preventDefault();
-  //   // console.log('customer:', currentCustomer);
-  //   console.log('start date:', formFromDate.value)
-  //   console.log('from submit', selectRoom(event))
-  //   const bookingObj = {
-  //     "userID": currentCustomer.id,
-  //     "date": formFromDate.value,
-  //     "roomNumber": //roomNumber from obj
-  //   };
-  //   fetch('http://localhost:3001/api/v1/bookings', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //     body: JSON.stringify(bookingObj)
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => console.log(data))
-  // })
 
   const hide = (element) => {
     return element.classList.add('hidden');
@@ -176,13 +173,14 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
     const formattedDate = fromDate.value.split('-').join('/');
     
     if (event.target.classList.contains('booking-icon')) {
-      selectRoom(targetRoomContainer, targetRoomNumber);
-      unhide(modalContainer);
       const bookingObj = {
         "userID": 1,
         "date": formattedDate,
         "roomNumber": parseInt(targetRoomNumber)
       };
+
+      unhide(modalContainer);
+      selectRoom(targetRoomContainer, bookingObj);
       fetch('http://localhost:3001/api/v1/bookings', {
         method: 'POST',
         headers: {
@@ -193,10 +191,12 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
         .then(response => response.json())
         .then(data => console.log(data))
     };
-  })
+  });
  
+  typeSelection.addEventListener('click', filterRoomsByType);
+
   window.addEventListener('click', (event) => {
     if (event.target == modalContainer) {
       hide(modalContainer);
     }
-  })
+  });
