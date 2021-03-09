@@ -26,6 +26,9 @@ const roomNumber = document.getElementById('roomNumber');
 const roomType = document.getElementById('roomType');
 const bedNum = document.getElementById('bedNum');
 const availabilityStatus = document.getElementById('availabilityStatus');
+const modalContainer = document.getElementById('modalContainer');
+const formFromDate = document.getElementById('formFromDate');
+const formToDate = document.getElementById('formToDate')
 
 import Customer from './Customer';
 import Booking from './Booking';
@@ -35,9 +38,10 @@ import Room from './Room';
 // const currentCustomer = new Customer();
 // const hotel = new Hotel();
 
-const openDashboard = (roomData, guestData) => {
+const openDashboard = (roomData, guest) => {
   populateRoomSection(roomData);
-  getGuestsTotalAmount(guestData);
+  getGuestsTotalAmount(guest, roomData);
+  displayUserName(guest);
 }
 
 // const capitalize = word => {
@@ -90,8 +94,12 @@ const populateBookingsSection = (bookingData) => {
   });
 }
 
-const getGuestsTotalAmount = guest => {
-  dollarsSpent.innerText = guest.calcTotalAmount;
+const getGuestsTotalAmount = (guest, roomData) => {
+  dollarsSpent.innerText = guest.calcTotalAmount(roomData);
+}
+
+const displayUserName = guest => {
+  customerName.innerText = guest.name;
 }
 
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
@@ -114,8 +122,33 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
   .then(values => {
     console.log(values)
     const currentCustomer = new Customer(values[0].customers[1], 'overlook2021')
-    console.log(currentCustomer.bookings);
+    console.log(values[2].rooms);
     populateRoomSection(values[2]);
-    getGuestsTotalAmount();
+    getGuestsTotalAmount(currentCustomer, values[2].rooms);
+    displayUserName(currentCustomer);
   })
   .catch(err => console.log(err));
+
+  const hide = (element) => {
+    return element.classList.add('hidden');
+  }
+
+  const unhide = (element) => {
+    return element.classList.remove('hidden');
+  }
+
+  roomSection.addEventListener('click', event => {
+    if (event.target.classList.contains('booking-icon')) {
+      unhide(modalContainer);
+    }
+
+    formFromDate.value = fromDate.value;
+    formToDate.value = toDate.value;
+    form
+  });
+ 
+  window.addEventListener('click', (event) => {
+    if (event.target == modalContainer) {
+      hide(modalContainer);
+    }
+  })
