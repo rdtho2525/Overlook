@@ -33,12 +33,16 @@ main {
 }
 
 .account-info {
-  width: 40%;
+  width: 50%;
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
   color: #fff;
   padding: 7px;
+}
+
+.account-info > aside {
+  display: inline-block;
 }
 
 .avatar {
