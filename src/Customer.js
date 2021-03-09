@@ -30,14 +30,18 @@ class Customer {
   }
 
   calcTotalAmount(roomData) {
-    return roomData.reduce((acc, room) => {
-      this.bookings.forEach(booking => {
-        if (booking.roomNumber === room.number) {
-          acc += room.costPerNight;
-        }
-      });
-      return acc;
-    }, 0);
+    if (!!this.bookings.length) {
+      return roomData.reduce((acc, room) => {
+        this.bookings.forEach(booking => {
+          if (booking.roomNumber === room.number) {
+            acc += room.costPerNight;
+          }
+        });
+        return acc;
+      }, 0);
+    } else {
+      return Number(0).toFixed(2);
+    }
   }
 }
 
