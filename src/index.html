@@ -17,7 +17,7 @@
               <label for="formFromDate" class="form-text">From:</label>
               <input id="formFromDate" class="date-field click" type="date" min="" required>
               <label for="formToDate" class="form-text">To:</label>
-              <input id="formToDate" class="date-field click" type="date" min="">  
+              <input id="formToDate" class="date-field click" type="date" min="" required>  
             </div>
               <article id="bookingMessage" class="booking-message">
                 <!-- <h3 class="subheader">Room Selection</h3> -->
@@ -65,7 +65,7 @@
       <div class="filter-button-container">
         <button class="filter-button click">Date Range</button>
         <button class="filter-button click">Room Type</button>
-        <button class="filter-button click">Your Bookings</button>
+        <button id="yourBookings" class="filter-button click">Your Bookings</button>
       </div>
       <form class="specify-filter">
         <div class="dates">
@@ -95,7 +95,7 @@
         <button id="pastBookings" class="past-bookings click hidden">Past bookings</button>
       </form>
     </section>
-    <h2 class="section-header">Browse Rooms:</h2>
+    <h2 id="sectionHeader" class="section-header">Browse Rooms:</h2>
     <section id="roomSection" class="room-container">
       <!-- <article class="room-card">
         <div class="room-image">

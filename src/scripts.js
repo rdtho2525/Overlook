@@ -35,6 +35,7 @@ const submitButton = document.getElementById('submitButton');
 const radioLabels = document.querySelectorAll('.radio-label');
 const bookingMessage = document.getElementById('bookingMessage');
 const typeSelection = document.getElementById('typeSelection');
+const yourBookings = document.getElementById('yourBookings');
 
 import Customer from './Customer';
 import Hotel from './Hotel';
@@ -93,23 +94,31 @@ const populateRoomSection = (roomData) => {
   roomSection.innerHTML = allRooms.join('');
 }
 
+const formatBookingDate = (date) => {
+  return date.split('/').join('');
+}
+
+
 const populateBookingsSection = (bookingData) => {
   const allBookings =  bookingData.map(booking => {
-  `<article class="room-card hidden">
-      <div class="room-image">
-        <img id="roomImage" src="" alt="">
-        <!-- <img id="priceTag" src="" alt="">   -->
+    return `<article id="${formatBookingDate(booking.date)}-${booking.roomNumber}" class="room-card">
+    <div class="room-image">
+      <img id="roomImage" src="" alt="">
+      <!-- <img id="priceTag" src="" alt="">   -->
+    </div>
+    <div class="room-details">
+      <button class="icon-container" disabled>
+        <img id="cancelBooking" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
+      </button>
+      <div class="room-info">
+        <p id="bookingDetails">Booking details:</p>
+        <p>Room number: <span class="room-number">${booking.roomNumber}</span></p>
+        <p>Date: <span>${booking.date}</span></p>
       </div>
-      <div class="room-details">
-        <img id="" class="booking-icon" src="" alt="Book Room Icon">
-        <p id="guestID">${booking.userID}</p>
-        <p id="bookingRoom">${booking.roomNumber}</p>
-        <!--<p id=""></p>-->
-        <p id="availabilityStatus">Status: Available</p>
-      </div>
-    </article>`
-    roomSection.innerHTML = allbookings.join('');
-  });
+    </div>
+  </article>`
+});
+  roomSection.innerHTML = allBookings.join('');
 }
 
 const filterRoomsByType = () => {
@@ -133,6 +142,15 @@ const selectRoom = (targetContainer, bookingObj) => {
   const targetRoomType = targetContainer.querySelector('.room-type').innerText;
   bookingMessage.innerHTML = `<p>You've selected room ${bookingObj.roomNumber}, a ${targetRoomType}.</p>`;
   console.log(currentCustomer.bookings)
+}
+
+const displayBookings = () => {
+  sectionHeader.innerText = `${currentCustomer.name}'s Bookings:`;
+  if (!!currentCustomer.bookings.length) {
+    populateBookingsSection(currentCustomer.bookings);
+  } else {
+    alert('You do not have any bookings at this time.');
+  }
 }
 
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
@@ -174,7 +192,7 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
     
     if (event.target.classList.contains('booking-icon')) {
       const bookingObj = {
-        "userID": 1,
+        "userID": currentCustomer.id,
         "date": formattedDate,
         "roomNumber": parseInt(targetRoomNumber)
       };
@@ -192,8 +210,13 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
         .then(data => console.log(data))
     };
   });
+
+  // cancelUserBooking.addEventListener('click', (event) => {
+  //   fetch('http://localhost:3001/api/v1/bookings')
+  // })
  
   typeSelection.addEventListener('click', filterRoomsByType);
+  yourBookings.addEventListener('click', displayBookings);
 
   window.addEventListener('click', (event) => {
     if (event.target == modalContainer) {
