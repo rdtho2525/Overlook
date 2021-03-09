@@ -1,4 +1,8 @@
 import './css/base.scss';
+import './images/pexels-konstantinos-eleftheriadis-2034335.jpg'
+import './images/avatar.svg'
+import './images/noun_booking_1094614.svg'
+import './images/logo2.png'
 // import './css/style.scss';
 
 const dollarsSpent = document.getElementById('dollarsSpent');
@@ -31,63 +35,87 @@ import Room from './Room';
 // const currentCustomer = new Customer();
 // const hotel = new Hotel();
 
-const openDashboard = (roomData) {
+const openDashboard = (roomData, guestData) => {
   populateRoomSection(roomData);
+  getGuestsTotalAmount(guestData);
 }
 
+// const capitalize = word => {
+//   const splitWords = word.split(' ');
+//   splitWords.forEach(word => {
+//     word = word.charAt(0).toUpperCase() + word.slice(1);
+//   });
+//   return splitWords.join(' ');
+// }
+
 const populateRoomSection = (roomData) => {
-  return roomData.forEach(room => {
-    roomSection.innerHTML += `
-  <article id="roomCard" class="room-card">
-    // <div class="room-image">
-    //   <img id="roomImage" src="" alt="">
-    <!-- img id="priceTag" src="" alt=""> -->
-    // </div>
-    <div class="room-details">
-      <img id="" class="booking-icon" src="" alt="Book Room Icon">
-      <p id="roomNumber">${room.number}</p>
-      <p id="roomType">${room.roomType}</p>
-      <p id="bedNum">${room.numBeds}</p>
-      <p id="availabilityStatus">Status: Available</p>
-    </div>
-  </article>`
+  const allRooms = roomData.rooms.map(room => {
+   return `<article class="room-card">
+      <div class="room-image">
+        <img id="roomImage" src="" alt="">
+        <!-- <img id="priceTag" src="" alt="">   -->
+      </div>
+      <div class="room-details">
+        <button class="icon-container">
+          <img id="" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
+        </button>
+        <div class="room-info">
+          <p id="roomNumber">Room number: ${room.number}</p>
+          <p id="roomType">Type: ${room.roomType}</p>
+          <p id="bedNum">Bed count: ${room.numBeds}</p>
+          <p id="availabilityStatus">Status: Available</p>
+        </div>
+      </div>
+    </article>`
   });
+  roomSection.innerHTML = allRooms.join('');
 }
 
 const populateBookingsSection = (bookingData) => {
-  return bookingData.forEach(booking => {
-    roomSection.innerHTML += `<article id="roomCard" class="room-card">
-    // <div class="room-image">
-    //   <img id="roomImage" src="" alt="">
-    <!-- img id="priceTag" src="" alt=""> -->
-    // </div>
-    <div class="room-details">
-      <img id="" class="booking-icon" src="" alt="Book Room Icon">
-      <p id="guestID">${booking.userID}</p>
-      <p id="bookingRoom">${booking.roomNumber}</p>
-      <!--<p id=""></p>-->
-      <p id="availabilityStatus">Status: Available</p>
-    </div>
-  </article>`
+  const allBookings =  bookingData.map(booking => {
+  `<article class="room-card hidden">
+      <div class="room-image">
+        <img id="roomImage" src="" alt="">
+        <!-- <img id="priceTag" src="" alt="">   -->
+      </div>
+      <div class="room-details">
+        <img id="" class="booking-icon" src="" alt="Book Room Icon">
+        <p id="guestID">${booking.userID}</p>
+        <p id="bookingRoom">${booking.roomNumber}</p>
+        <!--<p id=""></p>-->
+        <p id="availabilityStatus">Status: Available</p>
+      </div>
+    </article>`
+    roomSection.innerHTML = allbookings.join('');
   });
 }
 
+const getGuestsTotalAmount = guest => {
+  dollarsSpent.innerText = guest.calcTotalAmount;
+}
 
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
   .then(response => response.json())
   .catch(err => console.log(err));
 
 // const fetchSingleCustomer = fetch('http://localhost:3001/api/v1/customers/<id> where<id> will be a number of a customer’s id')
-//   .then();
+//   .then(response => response.json);
 //   .catch(err => displayErrorMessage(err));
 
 const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
   .then(response => response.json())
-  .catch(err => displayErrorMessage(err));
+  .catch(err => console.log(err));
 
 const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
   .then(response => response.json())
-  .catch(err => displayErrorMessage(err));
+  .catch(err => console.log(err));
 
 Promise.all([fetchCustomers, fetchBookings, fetchRooms])
-  .then(values => console.log(values));
+  .then(values => {
+    console.log(values)
+    const currentCustomer = new Customer(values[0].customers[1], 'overlook2021')
+    console.log(currentCustomer.bookings);
+    populateRoomSection(values[2]);
+    getGuestsTotalAmount();
+  })
+  .catch(err => console.log(err));
