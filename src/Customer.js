@@ -10,8 +10,8 @@ class Customer {
     this.pastBookings = [];
   }
 
-  bookRoom(date, room) {
-    const booking = new Booking(this, date, room)
+  bookRoom(bookingObj) {
+    const booking = new Booking(bookingObj)
     this.bookings.push(booking);
   }
 
