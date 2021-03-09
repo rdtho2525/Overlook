@@ -13,6 +13,7 @@ const roomTypeButton = document.getElementById('roomTypeButton');
 const bookingsButton = document.getElementById('bookingsButton');
 const fromDate = document.getElementById('fromDate');
 const toDate = document.getElementById('toDate');
+const radioRoomType = document.getElementsByName('radioRoomType');
 const residentialButton = document.getElementById('residentialButton');
 const suiteButton = document.getElementById('suiteButton');
 const juniorButton = document.getElementById('juniorButton');
@@ -29,6 +30,10 @@ const availabilityStatus = document.getElementById('availabilityStatus');
 const modalContainer = document.getElementById('modalContainer');
 const formFromDate = document.getElementById('formFromDate');
 const formToDate = document.getElementById('formToDate')
+const formRadioRoomType = document.getElementsByName('formRadioRoomType');
+const submitButton = document.getElementById('submitButton');
+const radioLabels = document.querySelectorAll('.radio-label');
+const bookingMessage = document.getElementById('bookingMessage');
 
 import Customer from './Customer';
 import Booking from './Booking';
@@ -64,8 +69,8 @@ const populateRoomSection = (roomData) => {
           <img id="" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
         </button>
         <div class="room-info">
-          <p id="roomNumber">Room number: ${room.number}</p>
-          <p id="roomType">Type: ${room.roomType}</p>
+          <p id="roomNumber${room.number}">Room number: <span class="room-number">${room.number}</span></p>
+          <p id="roomType${room.number}" >Type: <span class="room-type">${room.roomType}</span></p>
           <p id="bedNum">Bed count: ${room.numBeds}</p>
           <p id="availabilityStatus">Status: Available</p>
         </div>
@@ -102,6 +107,12 @@ const displayUserName = guest => {
   customerName.innerText = guest.name;
 }
 
+const selectRoom = (targetContainer, roomNumber) => {
+  //display reservation message
+  const targetRoomType = targetContainer.querySelector('.room-type').innerText;
+  bookingMessage.innerHTML = `<p>You've selected room ${roomNumber}, a ${targetRoomType}.</p>`;
+}
+
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
   .then(response => response.json())
   .catch(err => console.log(err));
@@ -129,6 +140,27 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
   })
   .catch(err => console.log(err));
 
+  // submitButton.addEventListener('click', (event) => {
+  //   event.preventDefault();
+  //   // console.log('customer:', currentCustomer);
+  //   console.log('start date:', formFromDate.value)
+  //   console.log('from submit', selectRoom(event))
+  //   const bookingObj = {
+  //     "userID": currentCustomer.id,
+  //     "date": formFromDate.value,
+  //     "roomNumber": //roomNumber from obj
+  //   };
+  //   fetch('http://localhost:3001/api/v1/bookings', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //     body: JSON.stringify(bookingObj)
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
+  // })
+
   const hide = (element) => {
     return element.classList.add('hidden');
   }
@@ -138,14 +170,30 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
   }
 
   roomSection.addEventListener('click', event => {
+    const targetRoom = event.target.closest('div');
+    const targetRoomContainer = targetRoom.querySelector('.room-info')
+    const targetRoomNumber = targetRoomContainer.querySelector('.room-number').innerText;
+    const formattedDate = fromDate.value.split('-').join('/');
+    
     if (event.target.classList.contains('booking-icon')) {
+      selectRoom(targetRoomContainer, targetRoomNumber);
       unhide(modalContainer);
-    }
-
-    formFromDate.value = fromDate.value;
-    formToDate.value = toDate.value;
-    form
-  });
+      const bookingObj = {
+        "userID": 1,
+        "date": formattedDate,
+        "roomNumber": parseInt(targetRoomNumber)
+      };
+      fetch('http://localhost:3001/api/v1/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookingObj)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+    };
+  })
  
   window.addEventListener('click', (event) => {
     if (event.target == modalContainer) {
