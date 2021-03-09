@@ -210,10 +210,6 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
         .then(data => console.log(data))
     };
   });
-
-  // cancelUserBooking.addEventListener('click', (event) => {
-  //   fetch('http://localhost:3001/api/v1/bookings')
-  // })
  
   typeSelection.addEventListener('click', filterRoomsByType);
   yourBookings.addEventListener('click', displayBookings);
