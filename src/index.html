@@ -7,6 +7,44 @@
 </head>
 <body>
   <main>
+    <div id="modalContainer" class="modal-container hidden">
+      <article id="formContainer" class="form-container">
+        <h2 class="form-header">Book a room</h2>
+        <form class="booking-form" action="">
+          <section class="middle-section">
+            <div class="booking-form-date">
+              <h3 class="subheader">Date Range: </h3>
+              <label for="formFromDate" class="form-text">From:</label>
+              <input id="formFromDate" class="date-field click" type="date" min="">
+              <label for="formToDate" class="form-text">To:</label>
+              <input id="formToDate" class="date-field click" type="date" min="">  
+            </div>
+              <div class="form-types">
+                <h3 class="subheader">Room Type</h3>
+                <div class="radio-button">
+                  <input id="formResidentialButton" class="click" type="radio">
+                  <label for="formResidentialButton" class="radio-label form-text">Residential Suite</label>
+                </div>
+                <div class="radio-button click">
+                  <input id="formSuiteButton" type="radio">
+                  <label for="formSuiteButton" class="radio-label form-text">Suite</label>  
+                </div>
+                <div class="radio-button click">
+                  <input id="formJuniorButton" type="radio">
+                  <label for="formJuniorButton" class="radio-label form-text">Junior Suite</label>  
+                </div>
+                <div class="radio-button click">
+                  <input id="formSingleRoomButton" type="radio">
+                  <label for="formSingleRoomButton" class="radio-label form-text">Single Room</label>  
+                </div>
+              </div>  
+          </section>
+          <div>
+            <button id="submitButton" class="submit">SUBMIT</button>
+          </div>
+        </form>
+      </article>
+    </div>
     <div class="nav-container">
       <nav class="account-info">
         <aside id="amountSpent">Amount spent: <p id="dollarsSpent"></p></aside>
@@ -19,42 +57,43 @@
       <img class="banner-image" src="./images/pexels-konstantinos-eleftheriadis-2034335.jpg" alt="Hotel Overlook at Sunset">
     </picture>
     <div class="search-container">
-      <input class="search-bar" type="search" placeholder="Search">
+      <input id="searchBar" class="search-bar" type="search" placeholder="Search">
+      <label for="searchBar"></label>
     </div>
     <section class="filter-section">
       <aside>Filter by:</aside>
       <div class="filter-button-container">
-        <button class="filter-button">Date Range</button>
-        <button class="filter-button">Room Type</button>
-        <button class="filter-button">Your Bookings</button>
+        <button class="filter-button click">Date Range</button>
+        <button class="filter-button click">Room Type</button>
+        <button class="filter-button click">Your Bookings</button>
       </div>
-      <aside class="specify-filter">
-        <div class="dates hidden">
+      <form class="specify-filter">
+        <div class="dates">
           <label for="fromDate">From:</label>
-          <input id="fromDate" class="date-field" type="date">
+          <input id="fromDate" class="date-field click" type="date" min="">
           <label for="toDate">To:</label>
-          <input id="toDate" class="date-field" type="date">  
+          <input id="toDate" class="date-field click" type="date" min="">  
         </div>
         <div class="room-types hidden">
-          <div class="radio-button">
+          <div class="radio-button click">
             <input id="residentialButton" type="radio">
             <label for="residentialButton" class="radio-label">Residential Suite</label>
           </div>
-          <div class="radio-button">
+          <div class="radio-button click">
             <input id="suiteButton" type="radio">
             <label for="suiteButton" class="radio-label">Suite</label>  
           </div>
-          <div class="radio-button">
+          <div class="radio-button click">
             <input id="juniorButton" type="radio">
             <label for="juniorButton" class="radio-label">Junior Suite</label>  
           </div>
-          <div class="radio-button">
+          <div class="radio-button click">
             <input id="singleRoomButton" type="radio">
             <label for="singleRoomButton" class="radio-label">Single Room</label>  
           </div>
         </div>
-        <button id="pastBookings" class="past-bookings hidden">Past bookings</button>
-      </aside>
+        <button id="pastBookings" class="past-bookings click hidden">Past bookings</button>
+      </form>
     </section>
     <h2 class="section-header">Browse Rooms:</h2>
     <section class="room-container">
@@ -65,7 +104,7 @@
         </div>
         <div class="room-details">
           <button class="icon-container">
-            <img id="" class="booking-icon" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
+            <img id="" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
           </button>
           <div class="room-info">
             <p id="roomNumber">Room no. 00</p>
@@ -82,7 +121,7 @@
         </div>
         <div class="room-details">
           <button class="icon-container">
-            <img id="" class="booking-icon" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
+            <img id="" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
           </button>
           <div class="room-info">
             <p id="roomNumber">Room no. 00</p>
@@ -99,7 +138,7 @@
         </div>
         <div class="room-details">
           <button class="icon-container">
-            <img id="" class="booking-icon" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
+            <img id="" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
           </button>
           <div class="room-info">
             <p id="roomNumber">Room no. 00</p>

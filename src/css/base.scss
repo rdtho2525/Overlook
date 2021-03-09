@@ -189,8 +189,86 @@ picture,
 .booking-icon {
   height: 100%;
   width: 100%;
-  // position: fixed;
-  // transform: translate(410%, -125%);
+}
+
+.click {
+  cursor: pointer;
+}
+
+.click:hover {
+  background-color: rgba(204, 196, 196, 0.2);
+}
+
+.form-container {
+  height: 50%;
+  width: 88%;
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+  max-height: 340px;
+  max-width: 570px;
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: 10px;
+}
+
+.form-header {
+  margin: 0 auto;
+}
+
+.booking-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.middle-section {
+  height: 66%;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.middle-section {
+  margin: 5px;
+}
+
+.booking-form-date {
+  height: 100%;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  // align-content: center;
+}
+
+.booking-form-date > label {
+  margin: 5px 0px;
+}
+.form-types {
+  width: 45%;
+}
+
+.subheader, 
+.form-text {
+  font-size: 2.5vh;
+}
+
+.submit {
+  height: 2em;
+  width: 8em;
+  border-radius: 8px;
+}
+
+.modal-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
 }
 
 .hidden {
@@ -198,11 +276,6 @@ picture,
 }
 
 @media only screen and (min-width: 768px) {
-  // .filter-section,
-  // .section-header {
-  //   margin: 7px 20px;
-  // }
-
   .room-container {
     justify-content: space-between;
     margin-top: 10px;
@@ -213,12 +286,30 @@ picture,
     max-width: 48%;
     font-size: 1.63vh;
   }
+
+  .booking-form {
+    max-height: 600px;
+    max-width: 700px;
+  }
+
+  .booking-form::after {
+    transform: translate(5550%, -110%);
+  }
 }
 
 @media only screen and (min-width: 1000px) {
   .filter-section,
   .section-header {
     margin: 7px 20px;
+  }
+
+  .booking-form {
+    max-height: 600px;
+    max-width: 700px;
+  }
+
+  .booking-form::after {
+    transform: scale(2) translate(3500%, -100%);
   }
 }
 
@@ -247,10 +338,6 @@ picture,
     box-shadow: 3px 3px 5px 6px #ccc;
   }
 
-  // picture > img {
-  //   width: 75%;
-  // }
-
   picture,
   .filter-section,
   .room-container {
@@ -263,12 +350,7 @@ picture,
   .room-card {
     height: 7em;
     max-width: 400px;
-    // font-size: 16px;
   }
-
-  // .room-details > p {
-  //   width: 250px;
-  // }
 }
 
 @media only screen and (max-width: 300px) {
