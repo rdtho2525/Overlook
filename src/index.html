@@ -15,29 +15,29 @@
             <div class="booking-form-date">
               <h3 class="subheader">Date Range: </h3>
               <label for="formFromDate" class="form-text">From:</label>
-              <input id="formFromDate" class="date-field click" type="date" min="">
+              <input id="formFromDate" class="date-field click" type="date" min="" required>
               <label for="formToDate" class="form-text">To:</label>
               <input id="formToDate" class="date-field click" type="date" min="">  
             </div>
-              <div class="form-types">
-                <h3 class="subheader">Room Type</h3>
-                <div class="radio-button">
-                  <input id="formResidentialButton" class="click" type="radio">
-                  <label for="formResidentialButton" class="radio-label form-text">Residential Suite</label>
+              <article id="bookingMessage" class="booking-message">
+                <!-- <h3 class="subheader">Room Selection</h3> -->
+                <!-- <div class="radio-button">
+                  <input id="residentialButtonForm" class="click" type="radio" name="formRadioRoomType">
+                  <label for="residentialButtonForm" class="radio-label form-text">Residential Suite</label>
                 </div>
                 <div class="radio-button click">
-                  <input id="formSuiteButton" type="radio">
-                  <label for="formSuiteButton" class="radio-label form-text">Suite</label>  
+                  <input id="suiteButtonForm" type="radio" name="formRadioRoomType">
+                  <label for="suiteButtonForm" class="radio-label form-text">Suite</label>  
                 </div>
                 <div class="radio-button click">
-                  <input id="formJuniorButton" type="radio">
-                  <label for="formJuniorButton" class="radio-label form-text">Junior Suite</label>  
+                  <input id="juniorButtonForm" type="radio" name="formRadioRoomType">
+                  <label for="juniorButtonForm" class="radio-label form-text">Junior Suite</label>  
                 </div>
                 <div class="radio-button click">
-                  <input id="formSingleRoomButton" type="radio">
-                  <label for="formSingleRoomButton" class="radio-label form-text">Single Room</label>  
-                </div>
-              </div>  
+                  <input id="singleRoomButtonForm" type="radio" name="formRadioRoomType">
+                  <label for="singleRoomButtonForm" class="radio-label form-text">Single Room</label>  
+                </div> -->
+              </article>  
           </section>
           <div class="submit-container">
             <input id="submitButton" class="submit click" type="submit" value="SUBMIT">
@@ -74,21 +74,21 @@
           <label for="toDate">To:</label>
           <input id="toDate" class="date-field click" type="date" min="">  
         </div>
-        <div class="room-types hidden">
+        <div class="room-types">
           <div class="radio-button click">
-            <input id="residentialButton" type="radio">
+            <input id="residentialButton" type="radio" name="radioRoomType">
             <label for="residentialButton" class="radio-label">Residential Suite</label>
           </div>
           <div class="radio-button click">
-            <input id="suiteButton" type="radio">
+            <input id="suiteButton" type="radio" name="radioRoomType">
             <label for="suiteButton" class="radio-label">Suite</label>  
           </div>
           <div class="radio-button click">
-            <input id="juniorButton" type="radio">
+            <input id="juniorButton" type="radio" name="radioRoomType">
             <label for="juniorButton" class="radio-label">Junior Suite</label>  
           </div>
           <div class="radio-button click">
-            <input id="singleRoomButton" type="radio">
+            <input id="singleRoomButton" type="radio" name="radioRoomType">
             <label for="singleRoomButton" class="radio-label">Single Room</label>  
           </div>
         </div>
