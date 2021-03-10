@@ -35,9 +35,8 @@ describe('Hotel', function() {
     expect(hotel.availableRooms).to.eql([]);
   });
 
-  it.only('should display only rooms that are available', function() {
+  it('should display only rooms that are available', function() {
     hotel.checkRoomAvailability(sampleRooms, sampleBookings, '2020/02/16');
-    console.log(hotel.availableRooms)
     expect(hotel.availableRooms).to.eql([
       {
         "number": 1,
@@ -91,6 +90,7 @@ describe('Hotel', function() {
   })
 
   it('should be able to filter rooms by type', function() {
+    hotel.availableRooms = sampleRooms;
     expect(hotel.filterRoomsByType('single room')).to.eql([
       {
         "number": 3,
@@ -115,6 +115,14 @@ describe('Hotel', function() {
         "bedSize": "queen",
         "numBeds": 2,
         "costPerNight": 340.17
+      },
+      {
+        "number": 7,
+        "roomType": "single room",
+        "bidet": false,
+        "bedSize": "queen",
+        "numBeds": 2,
+        "costPerNight": 231.46
       }
     ]);
   });
