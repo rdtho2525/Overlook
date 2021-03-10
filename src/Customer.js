@@ -15,6 +15,10 @@ class Customer {
     this.bookings.push(booking);
   }
 
+  getBookings(bookingObj) {
+    this.bookings = bookingObj.filter(booking => booking.userID === this.id);
+  }
+
   filterBookingsByDate(fromDate, toDate) {
     return this.bookings.filter(booking => {
       return booking.date > fromDate && booking.date < toDate;
