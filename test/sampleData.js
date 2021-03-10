@@ -84,6 +84,14 @@ export const sampleRooms = [
     "bedSize": "queen",
     "numBeds": 1,
     "costPerNight": 397.02
+  },
+  {
+    "number": 7,
+    "roomType": "single room",
+    "bidet": false,
+    "bedSize": "queen",
+    "numBeds": 2,
+    "costPerNight": 231.46
   }
 ]
 
