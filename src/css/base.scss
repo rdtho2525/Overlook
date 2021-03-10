@@ -20,9 +20,63 @@ body {
   width: 100%;
 }
 
-main {
+main,
+.login-page,
+.dashboard {
   width: 100%;
 }
+
+// __LOGIN SECTION__
+
+.login-section {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(206, 202, 197);
+}
+  
+.login {
+  height: 135px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-input {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 10px;
+  padding: 7px;
+}
+
+.login-input.error {
+  border-color: red;
+}
+
+.login-input::before {
+  content: '*';
+  display: inline-block;
+  transform: translate(10%);
+}
+
+.tagline {
+  margin-top: 5px;
+  padding-top: 2px;
+  font-style: italic;
+}
+
+.alert-icon {
+  height: 30px;
+  width: 30px;
+  margin-top: 10px;
+}
+
+// __DASHBOARD__
+
+//NAV
 
 .nav-container {
   width: 97%;
@@ -50,6 +104,8 @@ main {
   width: 50px;
 }
 
+// BANNER
+
 picture,
 .banner-image {
   width: 100%;
@@ -63,6 +119,8 @@ picture,
   position: absolute;
   padding-left: 2px;
 }
+
+// FILTER/SEARCH
 
 .search-container {
   width: 100%;
@@ -120,6 +178,8 @@ picture,
   font-size: 12px;
 }
 
+// BROWSE ROOMS
+
 .section-header {
   margin: 10px 7px;
 }
@@ -132,6 +192,8 @@ picture,
   flex-wrap: wrap;
   margin: 0 auto;
 }
+
+// ROOM CARD DESIGN
 
 .room-card {
   height: 8em;
@@ -195,14 +257,6 @@ picture,
   width: 100%;
 }
 
-.click {
-  cursor: pointer;
-}
-
-.click:hover {
-  background-color: rgba(204, 196, 196, 0.2);
-}
-
 .form-container {
   height: 50%;
   width: 88%;
@@ -243,7 +297,7 @@ picture,
   width: 45%;
   display: flex;
   flex-direction: column;
-  // align-content: center;
+  // align-content: center; 
 }
 
 .booking-form-date > label {
@@ -275,9 +329,7 @@ picture,
   z-index: 1;
 }
 
-.hidden {
-  display: none;
-}
+// RESPONSIVE DESIGN
 
 @media only screen and (min-width: 768px) {
   .room-container {
@@ -302,6 +354,15 @@ picture,
 }
 
 @media only screen and (min-width: 1000px) {
+  .login {
+    height: 10rem;
+    max-width: 350px;
+  }
+
+  .login-input {
+    height: 3rem;
+  }
+
   .filter-section,
   .section-header {
     margin: 7px 20px;
@@ -321,8 +382,12 @@ picture,
   html {
     background-color: rgba(0, 0, 0, 0.2);
   }
-
-  main {
+  
+  .login {
+    max-width: 252px;
+  }
+  
+  .dashboard {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -362,8 +427,18 @@ picture,
     display: flex;
     flex-direction: column;
   }
+}
 
-  .room-card {
-    // font-size: 14px;
-  }
+// MISCELLANEOUS
+
+.click {
+  cursor: pointer;
+}
+
+.click:hover {
+  background-color: rgba(204, 196, 196, 0.2);
+}
+
+.hidden {
+  display: none;
 }
