@@ -79,7 +79,7 @@ const populateRoomSection = (roomData) => {
         <!-- <img id="priceTag" src="" alt="">   -->
       </div>
       <div class="room-details">
-        <button class="icon-container">
+        <button name="booking" class="icon-container">
           <img id="" class="booking-icon click" src="./images/noun_booking_1094614.svg" alt="Book Room Icon">
         </button>
         <div class="room-info">
@@ -145,12 +145,35 @@ const selectRoom = (targetContainer, bookingObj) => {
 }
 
 const displayBookings = () => {
-  sectionHeader.innerText = `${currentCustomer.name}'s Bookings:`;
   if (!!currentCustomer.bookings.length) {
+    sectionHeader.innerText = `${currentCustomer.name}'s Bookings:`;
     populateBookingsSection(currentCustomer.bookings);
   } else {
-    alert('You do not have any bookings at this time.');
+    displayErrorMessage('You do not have any bookings at this time.');
   }
+}
+
+const checkValidity = (bookingObj) => {
+  if (!checkContents(bookingObj.date)) {
+    return true;
+  } else {
+    displayErrorMessage('A date is required in order to book a room.')
+    return false;
+  }
+}  
+
+const checkContents = (userInput) => {
+  const formattedInput = userInput.trim();
+  if (!formattedInput) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+const displayErrorMessage = message => {
+  unhide(modalContainer);
+  bookingMessage.innerText = message;
 }
 
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
@@ -184,6 +207,24 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
     return element.classList.remove('hidden');
   }
 
+  const postBooking = bookingObj => {
+    fetch('http://localhost:3001/api/v1/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bookingObj)
+    })
+      .then(response => { 
+        if (!response.ok) {
+        displayErrorMessage('A date is required in order to book a room.');
+        } else {
+          return response.json();
+        }
+      })
+      .then(data => console.log(data))
+  }
+
   roomSection.addEventListener('click', event => {
     const targetRoom = event.target.closest('div');
     const targetRoomContainer = targetRoom.querySelector('.room-info')
@@ -198,16 +239,11 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
       };
 
       unhide(modalContainer);
-      selectRoom(targetRoomContainer, bookingObj);
-      fetch('http://localhost:3001/api/v1/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bookingObj)
-      })
-        .then(response => response.json())
-        .then(data => console.log(data))
+      if (checkValidity(bookingObj)) {
+        selectRoom(targetRoomContainer, bookingObj);
+        postBooking(bookingObj);
+        currentCustomer.calcTotalAmount(hotel.availableRooms);
+      }
     };
   });
  
