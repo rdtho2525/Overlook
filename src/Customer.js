@@ -41,7 +41,7 @@ class Customer {
             acc += room.costPerNight;
           }
         });
-        return acc;
+        return Math.round(acc * 100) / 100;
       }, 0);
     } else {
       return Number(0).toFixed(2);
