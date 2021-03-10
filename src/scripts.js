@@ -47,10 +47,10 @@ let hotel;
 // let booking;
 // let room;
 
-const openDashboard = (guest, roomData) => {
+const openDashboard = (guest, roomData, bookingData) => {
   instantiateClasses(guest, roomData)
   populateRoomSection(roomData);
-  getGuestsTotalAmount(currentCustomer, roomData);
+  getGuestsTotalAmount(currentCustomer, roomData, bookingData);
   displayUserName(currentCustomer);
 }
 
@@ -128,7 +128,9 @@ const filterRoomsByType = () => {
   populateRoomSection(filteredList);
 }
 
-const getGuestsTotalAmount = (guest, roomData) => {
+const getGuestsTotalAmount = (guest, roomData, bookingData) => {
+  guest.getBookings(bookingData);
+  console.log(guest.bookings);
   dollarsSpent.innerText = guest.calcTotalAmount(roomData);
 }
 
@@ -195,7 +197,7 @@ const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
 Promise.all([fetchCustomers, fetchBookings, fetchRooms])
   .then(values => {
     const randomCustomer = values[0].customers[getRandomUserIndex()];
-    openDashboard(randomCustomer, values[2].rooms)
+    openDashboard(randomCustomer, values[2].rooms, values[1].bookings)
   })
   .catch(err => console.log(err));
 
