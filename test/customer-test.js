@@ -4,7 +4,8 @@ const Customer = require('../src/Customer');
 
 import {
   sampleRooms,
-  sampleCustomers
+  sampleCustomers,
+  sampleBookings
 } from './sampleData.js';
 
 describe('Customer', function() {
@@ -42,6 +43,17 @@ describe('Customer', function() {
 
   it('should hold a list of bookings', function() {
     expect(customer.bookings).to.eql([]);
+  });
+
+  it.only('should retrieve all of a user\'s past bookings', function() {
+    customer.getBookings(sampleBookings);
+    expect(customer.bookings).to.eql([ {
+      "id": "5fwrgu4i7k55hl6t8",
+      "userID": 1,
+      "date": "2020/02/05",
+      "roomNumber": 12,
+      "roomServiceCharges": []
+    }])
   });
 
   it('should hold a list of past bookings', function() {
