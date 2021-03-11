@@ -32,6 +32,7 @@ const formFromDate = document.getElementById('formFromDate');
 const formToDate = document.getElementById('formToDate')
 const formRadioRoomType = document.getElementsByName('formRadioRoomType');
 const submitButton = document.getElementById('submitButton');
+const loginButton = document.getElementById('loginButton');
 const alertMessage = document.getElementById('alertMessage');
 const typeSelection = document.getElementById('typeSelection');
 const yourBookings = document.getElementById('yourBookings');
@@ -46,27 +47,50 @@ const hotel = new Hotel();
 // let booking;
 // let room;
 
+//////PLAYGROUND//////////
+const checkLogin = (event) => {
+  event.preventDefault();
+  console.log(event.currentTarget.form);
+  const formData = new FormData(event.currentTarget.form);
+  const username =  formData.get('username');
+  const password = formData.get('password');
+  validateLogin(username, password);
+  event.target.reset();
+}
+
+const validateLogin = (username, password) => {
+  const guestID = parseInt(username.replace(/[ a-zA-A]/g, ''));
+  console.log(guestID)
+  if (password === "overlook2021") {
+    retrieveAllData(guestID);
+  } else {
+    displayLoginError();
+  }
+}
+
+//////////////////////////
+
 const openDashboard = (values) => {
   // do something with values
-  // currentCustomer = new Customer();
-  const customerData = values[0].customers;
+  currentCustomer = new Customer(values[0], 'overlook2021');
+  console.log(values[0]);
+  console.log(currentCustomer);
+  // const customerData = values[0].customers;
   const bookingData = values[1].bookings;
   const roomData = values[2].rooms;
   // instantiateClasses(guest, roomData)
-  populateRoomSection(roomData);
+  populateRoomSection();
   getGuestsTotalAmount(currentCustomer, roomData, bookingData);
   displayUserName(currentCustomer);
 }
 
-const getRandomUserIndex = () => {
-  return Math.floor(Math.random() * 50)
+const displayLoginError = () => {
+  unhide(alertIcon);
+  tagline.classList.add('error')
+  tagline.innerText = 'Invalid username and/or password. Please try again.'
 }
 
-const instantiateClasses = (guest, roomData) => {
-  currentCustomer = new Customer(guest, 'overlook2021');
-}
-
-const populateRoomSection = (roomData) => {
+const populateRoomSection = () => {
   const allRooms = hotel.availableRooms.map(room => {
    return `<article class="room-card">
       <div class="room-image">
@@ -92,7 +116,6 @@ const populateRoomSection = (roomData) => {
 const formatBookingDate = (date) => {
   return date.split('/').join('');
 }
-
 
 const populateBookingsSection = (bookingData) => {
   const allBookings =  bookingData.map(booking => {
@@ -173,16 +196,14 @@ const displayMessage = message => {
   alertMessage.innerText = message;
 }
 
-const retrieveAllData = () => {
-  // const fetchSingleCustomer = (id) => {
-  //   fetch(`http://localhost:3001/api/v1/customers/${id}`)
-  //   .then(response => response.json)
-  //   .catch(err => displayErrorMessage(err));
-  // }
-
-  const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
+const retrieveAllData = (id) => {
+  const fetchSingleCustomer = fetch(`http://localhost:3001/api/v1/customers/${id}`)
     .then(response => response.json())
-    .catch(err => console.log(err));
+    .catch(err => displayErrorMessage(err));
+
+  // const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
+  //   .then(response => response.json())
+  //   .catch(err => console.log(err));
 
   const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
     .then(response => response.json())
@@ -191,7 +212,8 @@ const retrieveAllData = () => {
   const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
     .then(response => response.json())
     .catch(err => console.log(err));
-    return Promise.all([fetchCustomers, fetchBookings, fetchRooms])
+
+    return Promise.all([fetchSingleCustomer, fetchBookings, fetchRooms])
     .then(values => {
     // const randomCustomer = values[0].customers[getRandomUserIndex()];
     // hotel.checkRoomAvailability(values[2].rooms, values[1].bookings)
@@ -208,6 +230,29 @@ const retrieveAllData = () => {
   const unhide = (element) => {
     return element.classList.remove('hidden');
   }
+
+  const facilitatePostBooking = (event) => {
+    const targetRoom = event.target.closest('div');
+      const targetRoomContainer = targetRoom.querySelector('.room-info')
+      const targetRoomNumber = targetRoomContainer.querySelector('.room-number').innerText;
+      const formattedDate = fromDate.value.split('-').join('/');
+      
+      if (event.target.classList.contains('booking-icon')) {
+        const bookingObj = {
+          "userID": currentCustomer.id,
+          "date": formattedDate,
+          "roomNumber": parseInt(targetRoomNumber)
+        };
+
+        unhide(modalContainer);
+
+        if (checkValidity(bookingObj)) {
+          selectRoom(targetRoomContainer, bookingObj);
+          postBooking(bookingObj);
+          currentCustomer.calcTotalAmount(hotel.availableRooms);
+        }
+      };
+    }
 
   const postBooking = bookingObj => {
     fetch('http://localhost:3001/api/v1/bookings', {
@@ -228,25 +273,7 @@ const retrieveAllData = () => {
   }
 
   roomSection.addEventListener('click', event => {
-    const targetRoom = event.target.closest('div');
-    const targetRoomContainer = targetRoom.querySelector('.room-info')
-    const targetRoomNumber = targetRoomContainer.querySelector('.room-number').innerText;
-    const formattedDate = fromDate.value.split('-').join('/');
-    
-    if (event.target.classList.contains('booking-icon')) {
-      const bookingObj = {
-        "userID": currentCustomer.id,
-        "date": formattedDate,
-        "roomNumber": parseInt(targetRoomNumber)
-      };
-
-      unhide(modalContainer);
-      if (checkValidity(bookingObj)) {
-        selectRoom(targetRoomContainer, bookingObj);
-        postBooking(bookingObj);
-        currentCustomer.calcTotalAmount(hotel.availableRooms);
-      }
-    };
+    facilitatePostBooking(event);
   });
  
   typeSelection.addEventListener('click', filterRoomsByType);
@@ -258,7 +285,11 @@ const retrieveAllData = () => {
     }
   });
 
-  window.addEventListener('load', () => {
-    retrieveAllData()
-    console.log(retrieveAllData());
-  } )
+  loginButton.addEventListener('click', (event) => {
+    checkLogin(event);
+  });
+
+  // window.addEventListener('load', () => {
+  //   retrieveAllData(23)
+  //   console.log(retrieveAllData(23));
+  // } )
