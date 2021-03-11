@@ -1,0 +1,40 @@
+.filter-section > * {
+  margin: 10px 0px;
+}
+
+.filter-section,
+.section-header {
+  margin: 12px;
+}
+
+.filter-button {
+  border-radius: 15px;
+  padding: 5px 7px;
+}
+
+.filter-header {
+  margin: 7px 0px;
+}
+
+.date-field {
+  height: 2rem;
+  width: 10rem;
+}
+
+.date-fieled > label {
+  font-size: 12px;
+}
+
+.room-types {
+  width: 100%;
+  display: flex;
+}
+
+.radio-button {
+  width: auto;
+  margin: 5px;
+}
+
+.radio-label {
+  font-size: 12px;
+}
