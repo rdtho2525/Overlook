@@ -36,6 +36,8 @@ const loginButton = document.getElementById('loginButton');
 const alertMessage = document.getElementById('alertMessage');
 const typeSelection = document.getElementById('typeSelection');
 const yourBookings = document.getElementById('yourBookings');
+const dashboard = document.getElementById('dashboard');
+const loginPage = document.getElementById('loginPage');
 
 import Customer from './Customer';
 import Hotel from './Hotel';
@@ -44,8 +46,6 @@ import Room from './Room';
 
 let currentCustomer;
 const hotel = new Hotel();
-// let booking;
-// let room;
 
 //////PLAYGROUND//////////
 const checkLogin = (event) => {
@@ -79,7 +79,9 @@ const openDashboard = (values) => {
   const bookingData = values[1].bookings;
   const roomData = values[2].rooms;
   // instantiateClasses(guest, roomData)
-  populateRoomSection();
+  hide(loginPage);
+  unhide(dashboard);
+  populateRoomSection(roomData, bookingData, '2020/04/21');
   getGuestsTotalAmount(currentCustomer, roomData, bookingData);
   displayUserName(currentCustomer);
 }
@@ -90,7 +92,8 @@ const displayLoginError = () => {
   tagline.innerText = 'Invalid username and/or password. Please try again.'
 }
 
-const populateRoomSection = () => {
+const populateRoomSection = (roomData, bookingObj, date) => {
+  hotel.checkRoomAvailability(roomData, bookingObj, date);
   const allRooms = hotel.availableRooms.map(room => {
    return `<article class="room-card">
       <div class="room-image">
