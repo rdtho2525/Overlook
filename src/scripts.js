@@ -48,11 +48,11 @@ const hotel = new Hotel();
 
 const openDashboard = (values) => {
   // do something with values
-  currentCustomer = new Customer();
-  const customerData = values[0];
-  const bookingData = values[1];
-  const roomData = values[2];
-  instantiateClasses(guest, roomData)
+  // currentCustomer = new Customer();
+  const customerData = values[0].customers;
+  const bookingData = values[1].bookings;
+  const roomData = values[2].rooms;
+  // instantiateClasses(guest, roomData)
   populateRoomSection(roomData);
   getGuestsTotalAmount(currentCustomer, roomData, bookingData);
   displayUserName(currentCustomer);
@@ -173,31 +173,33 @@ const displayMessage = message => {
   alertMessage.innerText = message;
 }
 
-const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
-  .then(response => response.json())
-  .catch(err => console.log(err));
+const retrieveAllData = () => {
+  // const fetchSingleCustomer = (id) => {
+  //   fetch(`http://localhost:3001/api/v1/customers/${id}`)
+  //   .then(response => response.json)
+  //   .catch(err => displayErrorMessage(err));
+  // }
 
-const fetchSingleCustomer = (id) => {
-  fetch(`http://localhost:3001/api/v1/customers/${id}`)
-  .then(response => response.json)
-  .catch(err => displayErrorMessage(err));
-}
+  const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
+    .then(response => response.json())
+    .catch(err => console.log(err));
 
-const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
-  .then(response => response.json())
-  .catch(err => console.log(err));
+  const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
+    .then(response => response.json())
+    .catch(err => console.log(err));
 
-const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
-  .then(response => response.json())
-  .catch(err => console.log(err));
-
-Promise.all([fetchCustomers, fetchBookings, fetchRooms])
-  .then(values => {
+  const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
+    .then(response => response.json())
+    .catch(err => console.log(err));
+    return Promise.all([fetchCustomers, fetchBookings, fetchRooms])
+    .then(values => {
     // const randomCustomer = values[0].customers[getRandomUserIndex()];
     // hotel.checkRoomAvailability(values[2].rooms, values[1].bookings)
+    console.log(values);
     openDashboard(values)
   })
   .catch(err => console.log(err));
+}
 
   const hide = (element) => {
     return element.classList.add('hidden');
@@ -255,3 +257,8 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
       hide(modalContainer);
     }
   });
+
+  window.addEventListener('load', () => {
+    retrieveAllData()
+    console.log(retrieveAllData());
+  } )
