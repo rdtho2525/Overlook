@@ -15,6 +15,10 @@ class Customer {
     this.bookings.push(booking);
   }
 
+  getBookings(bookingObj) {
+    this.bookings = bookingObj.filter(booking => booking.userID === this.id);
+  }
+
   filterBookingsByDate(fromDate, toDate) {
     return this.bookings.filter(booking => {
       return booking.date > fromDate && booking.date < toDate;
@@ -37,7 +41,7 @@ class Customer {
             acc += room.costPerNight;
           }
         });
-        return acc;
+        return Math.round(acc * 100) / 100;
       }, 0);
     } else {
       return Number(0).toFixed(2);

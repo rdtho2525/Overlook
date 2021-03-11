@@ -7,68 +7,75 @@ import './images/logo2.png'
 
 const dollarsSpent = document.getElementById('dollarsSpent');
 const customerName = document.getElementById('customerName');
-const searchBar = document.getElementById('searchBar');
-const dateRangeButton = document.getElementById('dateRangeButton');
-const roomTypeButton = document.getElementById('roomTypeButton');
-const bookingsButton = document.getElementById('bookingsButton');
 const fromDate = document.getElementById('fromDate');
-const toDate = document.getElementById('toDate');
 const radioRoomType = document.getElementsByName('radioRoomType');
-const residentialButton = document.getElementById('residentialButton');
-const suiteButton = document.getElementById('suiteButton');
-const juniorButton = document.getElementById('juniorButton');
-const singleRoomButton = document.getElementById('singleRoomButton');
-const pastBookings = document.getElementById('pastBookings');
 const sectionHeader = document.getElementById('sectionHeader');
 const roomSection = document.getElementById('roomSection');
-const roomCard = document.getElementById('roomCard');
-const roomImage = document.getElementById('roomImage');
-const roomNumber = document.getElementById('roomNumber');
-const roomType = document.getElementById('roomType');
-const bedNum = document.getElementById('bedNum');
-const availabilityStatus = document.getElementById('availabilityStatus');
 const modalContainer = document.getElementById('modalContainer');
-const formFromDate = document.getElementById('formFromDate');
-const formToDate = document.getElementById('formToDate')
-const formRadioRoomType = document.getElementsByName('formRadioRoomType');
-const submitButton = document.getElementById('submitButton');
-const radioLabels = document.querySelectorAll('.radio-label');
-const bookingMessage = document.getElementById('bookingMessage');
+const loginButton = document.getElementById('loginButton');
+const alertMessage = document.getElementById('alertMessage');
 const typeSelection = document.getElementById('typeSelection');
 const yourBookings = document.getElementById('yourBookings');
+const dashboard = document.getElementById('dashboard');
+const loginPage = document.getElementById('loginPage');
 
 import Customer from './Customer';
 import Hotel from './Hotel';
-import Booking from './Booking';
-import Room from './Room';
+
 
 let currentCustomer;
-let hotel;
-// let booking;
-// let room;
+let allBookings;
+let allRooms;
+const hotel = new Hotel();
 
-const openDashboard = (guest, roomData) => {
-  instantiateClasses(guest, roomData)
-  populateRoomSection(roomData);
-  getGuestsTotalAmount(currentCustomer, roomData);
+const hide = (element) => {
+  return element.classList.add('hidden');
+}
+
+const unhide = (element) => {
+  return element.classList.remove('hidden');
+}
+
+const checkLogin = (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget.form);
+  const username =  formData.get('username');
+  const password = formData.get('password');
+  validateLogin(username, password);
+  event.target.reset();
+}
+
+const validateLogin = (username, password) => {
+  const guestID = parseInt(username.replace(/[ a-zA-A]/g, ''));
+  if (password === "overlook2021") {
+    retrieveAllData(guestID);
+  } else {
+    displayLoginError();
+  }
+}
+
+
+const openDashboard = (values) => {
+  currentCustomer = new Customer(values[0], 'overlook2021');
+  allBookings = values[1].bookings;
+  allRooms = values[2].rooms;
+  hide(loginPage);
+  unhide(dashboard);
+  hotel.checkRoomAvailability(allRooms, allBookings, fromDate.value);
+  populateRoomSection(hotel.availableRooms);
+  getGuestsTotalAmount(currentCustomer, allRooms, allBookings);
   displayUserName(currentCustomer);
 }
 
-// const capitalize = word => {
-//   const splitWords = word.split(' ');
-//   splitWords.forEach(word => {
-//     word = word.charAt(0).toUpperCase() + word.slice(1);
-//   });
-//   return splitWords.join(' ');
-// }
-
-const getRandomUserIndex = () => {
-  return Math.floor(Math.random() * 50)
+const displayLoginError = () => {
+  unhide(alertIcon);
+  tagline.classList.add('error')
+  tagline.innerText = 'Invalid username and/or password. Please try again.'
 }
 
-const instantiateClasses = (guest, roomData) => {
-  currentCustomer = new Customer(guest, 'overlook2021');
-  hotel = new Hotel(roomData);
+const formattedDate = () => {
+  const date = fromDate.value.replaceAll('-', '/');
+  return date;
 }
 
 const populateRoomSection = (roomData) => {
@@ -86,7 +93,7 @@ const populateRoomSection = (roomData) => {
           <p id="roomNumber${room.number}">Room number: <span class="room-number">${room.number}</span></p>
           <p id="roomType${room.number}" >Type: <span class="room-type">${room.roomType}</span></p>
           <p id="bedNum">Bed count: ${room.numBeds}</p>
-          <p id="availabilityStatus">Status: Available</p>
+          <p id="cost">Cost: $${room.costPerNight}</p>
         </div>
       </div>
     </article>`
@@ -97,7 +104,6 @@ const populateRoomSection = (roomData) => {
 const formatBookingDate = (date) => {
   return date.split('/').join('');
 }
-
 
 const populateBookingsSection = (bookingData) => {
   const allBookings =  bookingData.map(booking => {
@@ -128,7 +134,8 @@ const filterRoomsByType = () => {
   populateRoomSection(filteredList);
 }
 
-const getGuestsTotalAmount = (guest, roomData) => {
+const getGuestsTotalAmount = (guest, roomData, bookingData) => {
+  guest.getBookings(bookingData);
   dollarsSpent.innerText = guest.calcTotalAmount(roomData);
 }
 
@@ -137,11 +144,9 @@ const displayUserName = guest => {
 }
 
 const selectRoom = (targetContainer, bookingObj) => {
-  //display reservation message
   currentCustomer.bookRoom(bookingObj);
   const targetRoomType = targetContainer.querySelector('.room-type').innerText;
-  bookingMessage.innerHTML = `<p>You've selected room ${bookingObj.roomNumber}, a ${targetRoomType}.</p>`;
-  console.log(currentCustomer.bookings)
+  displayMessage(`Congratulations! You've booked room ${bookingObj.roomNumber}, a ${targetRoomType} for ${bookingObj.date}.`);
 }
 
 const displayBookings = () => {
@@ -149,7 +154,7 @@ const displayBookings = () => {
     sectionHeader.innerText = `${currentCustomer.name}'s Bookings:`;
     populateBookingsSection(currentCustomer.bookings);
   } else {
-    displayErrorMessage('You do not have any bookings at this time.');
+    displayMessage('You do not have any bookings at this time.');
   }
 }
 
@@ -157,7 +162,7 @@ const checkValidity = (bookingObj) => {
   if (!checkContents(bookingObj.date)) {
     return true;
   } else {
-    displayErrorMessage('A date is required in order to book a room.')
+    displayMessage('A date is required in order to book a room.')
     return false;
   }
 }  
@@ -171,62 +176,33 @@ const checkContents = (userInput) => {
   }
 }
 
-const displayErrorMessage = message => {
+const displayMessage = message => {
   unhide(modalContainer);
-  bookingMessage.innerText = message;
+  alertMessage.innerText = message;
 }
 
-const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
-  .then(response => response.json())
-  .catch(err => console.log(err));
+const retrieveAllData = (id) => {
+  const fetchSingleCustomer = fetch(`http://localhost:3001/api/v1/customers/${id}`)
+    .then(response => response.json())
+    .catch(err => displayErrorMessage('Something went wrong! Please check again later'));
 
-// const fetchSingleCustomer = fetch('http://localhost:3001/api/v1/customers/<id> where<id> will be a number of a customer’s id')
-//   .then(response => response.json);
-//   .catch(err => displayErrorMessage(err));
+  const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
+    .then(response => response.json())
+    .catch(err => displayErrorMessage('Something went wrong! Please check again later'));
 
-const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
-  .then(response => response.json())
-  .catch(err => console.log(err));
+  const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
+    .then(response => response.json())
+    .catch(err => displayErrorMessage('Something went wrong! Please check again later'));
 
-const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
-  .then(response => response.json())
-  .catch(err => console.log(err));
-
-Promise.all([fetchCustomers, fetchBookings, fetchRooms])
-  .then(values => {
-    const randomCustomer = values[0].customers[getRandomUserIndex()];
-    openDashboard(randomCustomer, values[2].rooms)
+    return Promise.all([fetchSingleCustomer, fetchBookings, fetchRooms])
+     .then(values => {
+      openDashboard(values);
   })
   .catch(err => console.log(err));
+}
 
-  const hide = (element) => {
-    return element.classList.add('hidden');
-  }
-
-  const unhide = (element) => {
-    return element.classList.remove('hidden');
-  }
-
-  const postBooking = bookingObj => {
-    fetch('http://localhost:3001/api/v1/bookings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bookingObj)
-    })
-      .then(response => { 
-        if (!response.ok) {
-        displayErrorMessage('A date is required in order to book a room.');
-        } else {
-          return response.json();
-        }
-      })
-      .then(data => console.log(data))
-  }
-
-  roomSection.addEventListener('click', event => {
-    const targetRoom = event.target.closest('div');
+const facilitatePostBooking = (event) => {
+  const targetRoom = event.target.closest('div');
     const targetRoomContainer = targetRoom.querySelector('.room-info')
     const targetRoomNumber = targetRoomContainer.querySelector('.room-number').innerText;
     const formattedDate = fromDate.value.split('-').join('/');
@@ -239,19 +215,49 @@ Promise.all([fetchCustomers, fetchBookings, fetchRooms])
       };
 
       unhide(modalContainer);
+
       if (checkValidity(bookingObj)) {
         selectRoom(targetRoomContainer, bookingObj);
         postBooking(bookingObj);
         currentCustomer.calcTotalAmount(hotel.availableRooms);
       }
     };
-  });
- 
-  typeSelection.addEventListener('click', filterRoomsByType);
-  yourBookings.addEventListener('click', displayBookings);
+  }
 
-  window.addEventListener('click', (event) => {
-    if (event.target == modalContainer) {
-      hide(modalContainer);
-    }
-  });
+const postBooking = bookingObj => {
+  fetch('http://localhost:3001/api/v1/bookings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bookingObj)
+  })
+    .then(response => { 
+      if (!response.ok) {
+      displayErrorMessage('A date is required in order to book a room.');
+      } else {
+        return response.json();
+      }
+    })
+    .then(data => console.log(data))
+}
+  
+loginButton.addEventListener('click', (event) => {
+  checkLogin(event);
+});
+
+roomSection.addEventListener('click', event => {
+  facilitatePostBooking(event);
+});
+
+typeSelection.addEventListener('click', filterRoomsByType);
+yourBookings.addEventListener('click', displayBookings);
+fromDate.addEventListener('change', () => {
+  hotel.checkRoomAvailability(allRooms, allBookings, formattedDate())
+  populateRoomSection(hotel.availableRooms);
+})
+window.addEventListener('click', (event) => {
+  if (event.target == modalContainer) {
+    hide(modalContainer);
+  }
+});

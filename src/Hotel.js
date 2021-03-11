@@ -1,10 +1,19 @@
 class Hotel {
-  constructor(roomData) {
-    this.availableRooms = roomData;
+  constructor() {
+    this.availableRooms = [];
   }
 
   filterRoomsByType(type) {
     return this.availableRooms.filter(room => room.roomType === type);
+  }
+
+  checkRoomAvailability(roomData, bookingObj, date) {
+    if (!!date) {
+      const currentBookings = bookingObj.filter(booking => booking.date === date).map(booking => booking.roomNumber);
+      this.availableRooms = roomData.filter(room => !currentBookings.includes(room.number));  
+    } else {
+      this.availableRooms = roomData;
+    }
   }
 
   displayAvailabilityStatus(selectedRoom) {

@@ -4,14 +4,15 @@ const Booking = require('../src/Booking');
 
 import {
   sampleCustomers,
-  sampleRooms
+  sampleRooms,
+  sampleBookings
 } from './sampleData.js';
 
 describe('Booking', function() {
   let booking;
 
   beforeEach(function() {
-    booking = new Booking(sampleCustomers[1], '2020/04/15', sampleRooms[4]);
+    booking = new Booking(sampleBookings[0]);
   });
 
   it('should be a function', function() {
@@ -23,18 +24,18 @@ describe('Booking', function() {
   });
 
   it('should have a user ID', function() {
-    expect(booking.userID).to.equal(2);
+    expect(booking.userID).to.equal(9);
   });
 
   it('should have a date', function() {
-    expect(booking.date).to.equal('2020/04/15');
+    expect(booking.date).to.equal('2020/04/22');
   });
 
   it('should have a room number', function() {
-    expect(booking.roomNumber).to.equal(5);
+    expect(booking.roomNumber).to.equal(15);
   });
 
-  it('should be able to hold a list of service charges', function() {
+  it.skip('should be able to hold a list of service charges', function() {
     expect(booking.roomServiceCharges).to.eql([]);
   });
 })
