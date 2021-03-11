@@ -3,15 +3,13 @@
   width: 88%;
   display: flex;
   flex-direction: column;
-  align-items: space-around;
+  align-items: center;
+  justify-content: center;
   max-height: 340px;
   max-width: 570px;
   background-color: rgba(255, 255, 255, 0.92);
   border-radius: 10px;
-}
-
-.form-header {
-  margin: 0 auto;
+  font-size: 1.25rem;
 }
 
 .alert-message {
@@ -20,31 +18,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.middle-section {
-  height: 66%;
-  width: 80%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.middle-section {
-  margin: 5px;
-}
-
-.booking-form-date {
-  height: 100%;
-  width: 45%;
-  display: flex;
-  flex-direction: column;
+  text-align: center;
 }
 
 .alert-message {
   width: 45%;
 }
 
-.subheader,
-.form-text {
-  font-size: 2.5vh;
+.modal-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
 }
