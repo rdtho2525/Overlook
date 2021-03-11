@@ -257,7 +257,7 @@ picture,
   width: 100%;
 }
 
-.form-container {
+.message-container {
   height: 50%;
   width: 88%;
   display: flex;
@@ -318,16 +318,16 @@ picture,
   border-radius: 8px;
 }
 
-.modal-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
+// .modal-container {
+//   height: 100%;
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   position: absolute;
+//   background-color: rgba(0, 0, 0, 0.4);
+//   z-index: 1;
+// }
 
 // RESPONSIVE DESIGN
 
