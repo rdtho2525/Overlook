@@ -8,8 +8,12 @@ class Hotel {
   }
 
   checkRoomAvailability(roomData, bookingObj, date) {
-    const currentBookings = bookingObj.filter(booking => booking.date === date).map(booking => booking.roomNumber);
-    this.availableRooms = roomData.filter(room => !currentBookings.includes(room.number));
+    if (!!date) {
+      const currentBookings = bookingObj.filter(booking => booking.date === date).map(booking => booking.roomNumber);
+      this.availableRooms = roomData.filter(room => !currentBookings.includes(room.number));  
+    } else {
+      this.availableRooms = roomData;
+    }
   }
 
   displayAvailabilityStatus(selectedRoom) {
