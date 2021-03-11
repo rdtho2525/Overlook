@@ -7,31 +7,11 @@ import './images/logo2.png'
 
 const dollarsSpent = document.getElementById('dollarsSpent');
 const customerName = document.getElementById('customerName');
-const searchBar = document.getElementById('searchBar');
-const dateRangeButton = document.getElementById('dateRangeButton');
-const roomTypeButton = document.getElementById('roomTypeButton');
-const bookingsButton = document.getElementById('bookingsButton');
 const fromDate = document.getElementById('fromDate');
-const toDate = document.getElementById('toDate');
 const radioRoomType = document.getElementsByName('radioRoomType');
-const residentialButton = document.getElementById('residentialButton');
-const suiteButton = document.getElementById('suiteButton');
-const juniorButton = document.getElementById('juniorButton');
-const singleRoomButton = document.getElementById('singleRoomButton');
-const pastBookings = document.getElementById('pastBookings');
 const sectionHeader = document.getElementById('sectionHeader');
 const roomSection = document.getElementById('roomSection');
-const roomCard = document.getElementById('roomCard');
-const roomImage = document.getElementById('roomImage');
-const roomNumber = document.getElementById('roomNumber');
-const roomType = document.getElementById('roomType');
-const bedNum = document.getElementById('bedNum');
-const availabilityStatus = document.getElementById('availabilityStatus');
 const modalContainer = document.getElementById('modalContainer');
-const formFromDate = document.getElementById('formFromDate');
-const formToDate = document.getElementById('formToDate')
-const formRadioRoomType = document.getElementsByName('formRadioRoomType');
-const submitButton = document.getElementById('submitButton');
 const loginButton = document.getElementById('loginButton');
 const alertMessage = document.getElementById('alertMessage');
 const typeSelection = document.getElementById('typeSelection');
@@ -41,16 +21,23 @@ const loginPage = document.getElementById('loginPage');
 
 import Customer from './Customer';
 import Hotel from './Hotel';
-import Booking from './Booking';
-import Room from './Room';
+
 
 let currentCustomer;
+let allBookings;
+let allRooms;
 const hotel = new Hotel();
 
-//////PLAYGROUND//////////
+const hide = (element) => {
+  return element.classList.add('hidden');
+}
+
+const unhide = (element) => {
+  return element.classList.remove('hidden');
+}
+
 const checkLogin = (event) => {
   event.preventDefault();
-  console.log(event.currentTarget.form);
   const formData = new FormData(event.currentTarget.form);
   const username =  formData.get('username');
   const password = formData.get('password');
@@ -60,7 +47,6 @@ const checkLogin = (event) => {
 
 const validateLogin = (username, password) => {
   const guestID = parseInt(username.replace(/[ a-zA-A]/g, ''));
-  console.log(guestID)
   if (password === "overlook2021") {
     retrieveAllData(guestID);
   } else {
@@ -68,21 +54,16 @@ const validateLogin = (username, password) => {
   }
 }
 
-//////////////////////////
 
 const openDashboard = (values) => {
-  // do something with values
   currentCustomer = new Customer(values[0], 'overlook2021');
-  console.log(values[0]);
-  console.log(currentCustomer);
-  // const customerData = values[0].customers;
-  const bookingData = values[1].bookings;
-  const roomData = values[2].rooms;
-  // instantiateClasses(guest, roomData)
+  allBookings = values[1].bookings;
+  allRooms = values[2].rooms;
   hide(loginPage);
   unhide(dashboard);
-  populateRoomSection(roomData, bookingData, '2020/04/21');
-  getGuestsTotalAmount(currentCustomer, roomData, bookingData);
+  hotel.checkRoomAvailability(allRooms, allBookings, fromDate.value);
+  populateRoomSection(hotel.availableRooms);
+  getGuestsTotalAmount(currentCustomer, allRooms, allBookings);
   displayUserName(currentCustomer);
 }
 
@@ -92,9 +73,13 @@ const displayLoginError = () => {
   tagline.innerText = 'Invalid username and/or password. Please try again.'
 }
 
-const populateRoomSection = (roomData, bookingObj, date) => {
-  hotel.checkRoomAvailability(roomData, bookingObj, date);
-  const allRooms = hotel.availableRooms.map(room => {
+const formattedDate = () => {
+  const date = fromDate.value.replaceAll('-', '/');
+  return date;
+}
+
+const populateRoomSection = (roomData) => {
+  const allRooms = roomData.map(room => {
    return `<article class="room-card">
       <div class="room-image">
         <img id="roomImage" src="" alt="">
@@ -108,7 +93,7 @@ const populateRoomSection = (roomData, bookingObj, date) => {
           <p id="roomNumber${room.number}">Room number: <span class="room-number">${room.number}</span></p>
           <p id="roomType${room.number}" >Type: <span class="room-type">${room.roomType}</span></p>
           <p id="bedNum">Bed count: ${room.numBeds}</p>
-          <p id="availabilityStatus">Status: Available</p>
+          <p id="cost">Cost: $${room.costPerNight}</p>
         </div>
       </div>
     </article>`
@@ -142,7 +127,8 @@ const populateBookingsSection = (bookingData) => {
   roomSection.innerHTML = allBookings.join('');
 }
 
-const filterRoomsByType = () => {
+const filterRoomsByType = (values) => {
+
   const roomList = Array.from(radioRoomType);
   const selection = roomList.find(room => room.checked);
   const filteredList = hotel.filterRoomsByType(selection.value);
@@ -151,7 +137,6 @@ const filterRoomsByType = () => {
 
 const getGuestsTotalAmount = (guest, roomData, bookingData) => {
   guest.getBookings(bookingData);
-  console.log(guest.bookings);
   dollarsSpent.innerText = guest.calcTotalAmount(roomData);
 }
 
@@ -160,11 +145,9 @@ const displayUserName = guest => {
 }
 
 const selectRoom = (targetContainer, bookingObj) => {
-  //display reservation message
   currentCustomer.bookRoom(bookingObj);
   const targetRoomType = targetContainer.querySelector('.room-type').innerText;
   displayMessage(`Congratulations! You've booked room ${bookingObj.roomNumber}, a ${targetRoomType} for ${bookingObj.date}.`);
-  console.log(currentCustomer.bookings)
 }
 
 const displayBookings = () => {
@@ -204,10 +187,6 @@ const retrieveAllData = (id) => {
     .then(response => response.json())
     .catch(err => displayErrorMessage(err));
 
-  // const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
-  //   .then(response => response.json())
-  //   .catch(err => console.log(err));
-
   const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
     .then(response => response.json())
     .catch(err => console.log(err));
@@ -217,82 +196,72 @@ const retrieveAllData = (id) => {
     .catch(err => console.log(err));
 
     return Promise.all([fetchSingleCustomer, fetchBookings, fetchRooms])
-    .then(values => {
-    // const randomCustomer = values[0].customers[getRandomUserIndex()];
-    // hotel.checkRoomAvailability(values[2].rooms, values[1].bookings)
-    console.log(values);
-    openDashboard(values)
+     .then(values => {
+      openDashboard(values);
+      filterRoomsByType(values);
   })
   .catch(err => console.log(err));
 }
 
-  const hide = (element) => {
-    return element.classList.add('hidden');
-  }
-
-  const unhide = (element) => {
-    return element.classList.remove('hidden');
-  }
-
-  const facilitatePostBooking = (event) => {
-    const targetRoom = event.target.closest('div');
-      const targetRoomContainer = targetRoom.querySelector('.room-info')
-      const targetRoomNumber = targetRoomContainer.querySelector('.room-number').innerText;
-      const formattedDate = fromDate.value.split('-').join('/');
-      
-      if (event.target.classList.contains('booking-icon')) {
-        const bookingObj = {
-          "userID": currentCustomer.id,
-          "date": formattedDate,
-          "roomNumber": parseInt(targetRoomNumber)
-        };
-
-        unhide(modalContainer);
-
-        if (checkValidity(bookingObj)) {
-          selectRoom(targetRoomContainer, bookingObj);
-          postBooking(bookingObj);
-          currentCustomer.calcTotalAmount(hotel.availableRooms);
-        }
+const facilitatePostBooking = (event) => {
+  const targetRoom = event.target.closest('div');
+    const targetRoomContainer = targetRoom.querySelector('.room-info')
+    const targetRoomNumber = targetRoomContainer.querySelector('.room-number').innerText;
+    const formattedDate = fromDate.value.split('-').join('/');
+    
+    if (event.target.classList.contains('booking-icon')) {
+      const bookingObj = {
+        "userID": currentCustomer.id,
+        "date": formattedDate,
+        "roomNumber": parseInt(targetRoomNumber)
       };
-    }
 
-  const postBooking = bookingObj => {
-    fetch('http://localhost:3001/api/v1/bookings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bookingObj)
-    })
-      .then(response => { 
-        if (!response.ok) {
-        displayErrorMessage('A date is required in order to book a room.');
-        } else {
-          return response.json();
-        }
-      })
-      .then(data => console.log(data))
+      unhide(modalContainer);
+
+      if (checkValidity(bookingObj)) {
+        selectRoom(targetRoomContainer, bookingObj);
+        postBooking(bookingObj);
+        currentCustomer.calcTotalAmount(hotel.availableRooms);
+      }
+    };
   }
 
-  roomSection.addEventListener('click', event => {
-    facilitatePostBooking(event);
-  });
- 
-  typeSelection.addEventListener('click', filterRoomsByType);
-  yourBookings.addEventListener('click', displayBookings);
+const postBooking = bookingObj => {
+  fetch('http://localhost:3001/api/v1/bookings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bookingObj)
+  })
+    .then(response => { 
+      if (!response.ok) {
+      displayErrorMessage('A date is required in order to book a room.');
+      } else {
+        return response.json();
+      }
+    })
+    .then(data => console.log(data))
+}
+  
+loginButton.addEventListener('click', (event) => {
+  checkLogin(event);
+});
 
-  window.addEventListener('click', (event) => {
-    if (event.target == modalContainer) {
-      hide(modalContainer);
-    }
-  });
+roomSection.addEventListener('click', event => {
+  facilitatePostBooking(event);
+});
 
-  loginButton.addEventListener('click', (event) => {
-    checkLogin(event);
-  });
-
-  // window.addEventListener('load', () => {
-  //   retrieveAllData(23)
-  //   console.log(retrieveAllData(23));
-  // } )
+typeSelection.addEventListener('click', (event) => {
+  filterRoomsByType()
+});
+yourBookings.addEventListener('click', displayBookings);
+fromDate.addEventListener('change', () => {
+  hotel.checkRoomAvailability(allRooms, allBookings, formattedDate())
+  populateRoomSection(hotel.availableRooms);
+})
+window.addEventListener('click', (event) => {
+  if (event.target == modalContainer) {
+    hide(modalContainer);
+  }
+});
