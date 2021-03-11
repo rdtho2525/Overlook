@@ -127,8 +127,7 @@ const populateBookingsSection = (bookingData) => {
   roomSection.innerHTML = allBookings.join('');
 }
 
-const filterRoomsByType = (values) => {
-
+const filterRoomsByType = () => {
   const roomList = Array.from(radioRoomType);
   const selection = roomList.find(room => room.checked);
   const filteredList = hotel.filterRoomsByType(selection.value);
@@ -185,20 +184,19 @@ const displayMessage = message => {
 const retrieveAllData = (id) => {
   const fetchSingleCustomer = fetch(`http://localhost:3001/api/v1/customers/${id}`)
     .then(response => response.json())
-    .catch(err => displayErrorMessage(err));
+    .catch(err => displayErrorMessage('Something went wrong! Please check again later'));
 
   const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
     .then(response => response.json())
-    .catch(err => console.log(err));
+    .catch(err => displayErrorMessage('Something went wrong! Please check again later'));
 
   const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
     .then(response => response.json())
-    .catch(err => console.log(err));
+    .catch(err => displayErrorMessage('Something went wrong! Please check again later'));
 
     return Promise.all([fetchSingleCustomer, fetchBookings, fetchRooms])
      .then(values => {
       openDashboard(values);
-      filterRoomsByType(values);
   })
   .catch(err => console.log(err));
 }
@@ -252,9 +250,7 @@ roomSection.addEventListener('click', event => {
   facilitatePostBooking(event);
 });
 
-typeSelection.addEventListener('click', (event) => {
-  filterRoomsByType()
-});
+typeSelection.addEventListener('click', filterRoomsByType);
 yourBookings.addEventListener('click', displayBookings);
 fromDate.addEventListener('change', () => {
   hotel.checkRoomAvailability(allRooms, allBookings, formattedDate())
