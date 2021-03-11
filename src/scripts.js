@@ -32,8 +32,7 @@ const formFromDate = document.getElementById('formFromDate');
 const formToDate = document.getElementById('formToDate')
 const formRadioRoomType = document.getElementsByName('formRadioRoomType');
 const submitButton = document.getElementById('submitButton');
-const radioLabels = document.querySelectorAll('.radio-label');
-const bookingMessage = document.getElementById('bookingMessage');
+const alertMessage = document.getElementById('alertMessage');
 const typeSelection = document.getElementById('typeSelection');
 const yourBookings = document.getElementById('yourBookings');
 
@@ -43,24 +42,21 @@ import Booking from './Booking';
 import Room from './Room';
 
 let currentCustomer;
-let hotel;
+const hotel = new Hotel();
 // let booking;
 // let room;
 
-const openDashboard = (guest, roomData, bookingData) => {
+const openDashboard = (values) => {
+  // do something with values
+  currentCustomer = new Customer();
+  const customerData = values[0];
+  const bookingData = values[1];
+  const roomData = values[2];
   instantiateClasses(guest, roomData)
   populateRoomSection(roomData);
   getGuestsTotalAmount(currentCustomer, roomData, bookingData);
   displayUserName(currentCustomer);
 }
-
-// const capitalize = word => {
-//   const splitWords = word.split(' ');
-//   splitWords.forEach(word => {
-//     word = word.charAt(0).toUpperCase() + word.slice(1);
-//   });
-//   return splitWords.join(' ');
-// }
 
 const getRandomUserIndex = () => {
   return Math.floor(Math.random() * 50)
@@ -68,11 +64,10 @@ const getRandomUserIndex = () => {
 
 const instantiateClasses = (guest, roomData) => {
   currentCustomer = new Customer(guest, 'overlook2021');
-  hotel = new Hotel(roomData);
 }
 
 const populateRoomSection = (roomData) => {
-  const allRooms = roomData.map(room => {
+  const allRooms = hotel.availableRooms.map(room => {
    return `<article class="room-card">
       <div class="room-image">
         <img id="roomImage" src="" alt="">
@@ -142,7 +137,7 @@ const selectRoom = (targetContainer, bookingObj) => {
   //display reservation message
   currentCustomer.bookRoom(bookingObj);
   const targetRoomType = targetContainer.querySelector('.room-type').innerText;
-  bookingMessage.innerHTML = `<p>You've selected room ${bookingObj.roomNumber}, a ${targetRoomType}.</p>`;
+  displayMessage(`Congratulations! You've booked room ${bookingObj.roomNumber}, a ${targetRoomType} for ${bookingObj.date}.`);
   console.log(currentCustomer.bookings)
 }
 
@@ -151,7 +146,7 @@ const displayBookings = () => {
     sectionHeader.innerText = `${currentCustomer.name}'s Bookings:`;
     populateBookingsSection(currentCustomer.bookings);
   } else {
-    displayErrorMessage('You do not have any bookings at this time.');
+    displayMessage('You do not have any bookings at this time.');
   }
 }
 
@@ -159,7 +154,7 @@ const checkValidity = (bookingObj) => {
   if (!checkContents(bookingObj.date)) {
     return true;
   } else {
-    displayErrorMessage('A date is required in order to book a room.')
+    displayMessage('A date is required in order to book a room.')
     return false;
   }
 }  
@@ -173,18 +168,20 @@ const checkContents = (userInput) => {
   }
 }
 
-const displayErrorMessage = message => {
+const displayMessage = message => {
   unhide(modalContainer);
-  bookingMessage.innerText = message;
+  alertMessage.innerText = message;
 }
 
 const fetchCustomers = fetch('http://localhost:3001/api/v1/customers')
   .then(response => response.json())
   .catch(err => console.log(err));
 
-// const fetchSingleCustomer = fetch('http://localhost:3001/api/v1/customers/<id> where<id> will be a number of a customer’s id')
-//   .then(response => response.json);
-//   .catch(err => displayErrorMessage(err));
+const fetchSingleCustomer = (id) => {
+  fetch(`http://localhost:3001/api/v1/customers/${id}`)
+  .then(response => response.json)
+  .catch(err => displayErrorMessage(err));
+}
 
 const fetchBookings = fetch('http://localhost:3001/api/v1/bookings')
   .then(response => response.json())
@@ -196,8 +193,9 @@ const fetchRooms = fetch('http://localhost:3001/api/v1/rooms')
 
 Promise.all([fetchCustomers, fetchBookings, fetchRooms])
   .then(values => {
-    const randomCustomer = values[0].customers[getRandomUserIndex()];
-    openDashboard(randomCustomer, values[2].rooms, values[1].bookings)
+    // const randomCustomer = values[0].customers[getRandomUserIndex()];
+    // hotel.checkRoomAvailability(values[2].rooms, values[1].bookings)
+    openDashboard(values)
   })
   .catch(err => console.log(err));
 
