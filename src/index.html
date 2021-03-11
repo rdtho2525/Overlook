@@ -12,35 +12,33 @@
         <img class="logo-login" src="./images/logo2.png" alt="Overlook Hotels logo">
       </header>
       <form id="login" class="login" name="login" action="">
-        <label for="username" class="hidden" ></label>
-        <input id="username" class="login-input" name="login" placeholder="Username" type="text">
-        <label for="password" class="hidden"></label>
-        <input id="password" class="login-input" name="login" placeholder="Password" type="text">
-        <input id="submitLogin" type="submit" class="login-input click" value="Log In">
+        <label for="username" class="">Username:</label>
+        <input id="username" class="login-input" name="username" placeholder="Username" type="text">
+        <label for="password" class="">Password:</label>
+        <input id="password" class="login-input" name="password" placeholder="Password" type="text">
+        <input id="submit" type="submit" class="login-input submitt click" value="Log In">
       </form>
       <img id="alertIcon" class="alert-icon hidden" src="./images/noun_Alert_428650.svg" alt="Alert icon">
       <aside id="tagline" class="tagline">Book your stay today!</aside>
     </section>
-    <section id="dashboard" class="dashboard hidden">
+    <section id="dashboard" class="dashboard">
       <div id="modalContainer" class="modal-container hidden">
-        <article id="formContainer" class="form-container">
-          <h2 class="form-header">Book a room</h2>
-          <form class="booking-form" action="">
-            <section class="middle-section">
-              <div class="booking-form-date">
+        <section id="messageContainer" class="message-container">
+          <!-- <h2 id="messageHeader" class="message-header"></h2> -->
+          <article id="alertMessage" class="alert-message"></article>  
+          <!-- <form class="booking-form" action=""> -->
+              <!-- <div class="booking-form-date">
                 <h3 class="subheader">Date Range: </h3>
                 <label for="formFromDate" class="form-text">From:</label>
                 <input id="formFromDate" class="date-field click" type="date" min="" required>
                 <label for="formToDate" class="form-text">To:</label>
                 <input id="formToDate" class="date-field click" type="date" min="" required>  
-              </div>
-              <article id="bookingMessage" class="booking-message"></article>  
-            </section>
-            <div class="submit-container">
+              </div> -->
+            <!-- <div class="submit-container">
               <input id="submitButton" class="submit click" type="submit" value="SUBMIT">
-            </div>
-          </form>
-        </article>
+            </div> -->
+          <!-- </form> -->
+          </section>
       </div>
       <div class="nav-container">
         <nav class="account-info">
@@ -53,24 +51,26 @@
         <img class="logo" src="./images/logo2.png" alt="Overlook Hotels logo">
         <img class="banner-image" src="./images/pexels-konstantinos-eleftheriadis-2034335.jpg" alt="Hotel Overlook at Sunset">
       </picture>
-      <div class="search-container">
+      <!-- <div class="search-container">
         <input id="searchBar" class="search-bar" type="search" placeholder="Search">
         <label for="searchBar"></label>
-      </div>
+      </div> -->
       <section class="filter-section">
         <aside>Filter by:</aside>
         <div class="filter-button-container">
-          <button class="filter-button click">Date Range</button>
-          <button class="filter-button click">Room Type</button>
+          <!-- <button class="filter-button click">Date Range</button>
+          <button class="filter-button click">Room Type</button> -->
           <button id="yourBookings" class="filter-button click">Your Bookings</button>
         </div>
         <form class="specify-filter">
           <div class="dates">
+            <h3 class="filter-header">Date:</h3>
             <label for="fromDate">From:</label>
             <input id="fromDate" class="date-field click" type="date" min="">
             <label for="toDate">To:</label>
             <input id="toDate" class="date-field click" type="date" min="">  
           </div>
+          <h3 class="filter-header">Room Type:</h3>
           <div id="typeSelection" class="room-types">
             <div class="radio-button click">
               <input id="residentialButton" type="radio" name="radioRoomType" value="residential suite">
