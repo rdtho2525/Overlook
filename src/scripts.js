@@ -22,7 +22,6 @@ const loginPage = document.getElementById('loginPage');
 import Customer from './Customer';
 import Hotel from './Hotel';
 
-
 let currentCustomer;
 let allBookings;
 let allRooms;
@@ -139,7 +138,7 @@ const getGuestsTotalAmount = (guest, roomData, bookingData) => {
   dollarsSpent.innerText = guest.calcTotalAmount(roomData);
 }
 
-const displayUserName = guest => {
+const displayUserName = (guest) => {
   customerName.innerText = guest.name;
 }
 
@@ -176,7 +175,7 @@ const checkContents = (userInput) => {
   }
 }
 
-const displayMessage = message => {
+const displayMessage = (message) => {
   unhide(modalContainer);
   alertMessage.innerText = message;
 }
@@ -224,7 +223,7 @@ const facilitatePostBooking = (event) => {
     };
   }
 
-const postBooking = bookingObj => {
+const postBooking = (bookingObj) => {
   fetch('http://localhost:3001/api/v1/bookings', {
     method: 'POST',
     headers: {
