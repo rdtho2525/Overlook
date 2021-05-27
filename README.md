@@ -42,7 +42,7 @@ https://miro.com/app/board/o9J_lRWNG-M=/
 
 ## Local install instructions
 + `git clone` Overlookrepository (front-end)
-+ `git clone` overlook-api repository (back-end API)
++ `git clone` [overlook-api repository](https://github.com/turingschool-examples/overlook-api) (back-end API)
 + Run `npm start` in both repositories
 + Visit "http://localhost:8080/" in a browser of your choice
 
