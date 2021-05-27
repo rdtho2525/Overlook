@@ -3,7 +3,7 @@
 ## Introduction
 __Overlook Hotels__ is your go-to resort destination! With this new booking app, booking your next vacation with be a _breeze_.
 
-##How to use:
+## How to use:
 + Users are first greeted with a login page where they can enter their unique credentials to access their account information.
 
 ![login page](src/images/login.png)
